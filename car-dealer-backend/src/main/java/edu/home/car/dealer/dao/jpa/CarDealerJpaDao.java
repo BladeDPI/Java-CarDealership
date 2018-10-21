@@ -10,24 +10,24 @@
  */
 package edu.home.car.dealer.dao.jpa;
 
-import edu.home.car.dealer.dao.BlogPostDao;
+import edu.home.car.dealer.dao.CarDealerDao;
 import edu.home.car.dealer.dao.RepositoryException;
-import edu.home.car.dealer.model.BlogPost;
+import edu.home.car.dealer.model.CarDeal;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
 
 @ApplicationScoped
-public class BlogPostJpaDao extends AbstractJpaDao<BlogPost> implements BlogPostDao {
+public class CarDealerJpaDao extends AbstractJpaDao<CarDeal> implements CarDealerDao {
 
-    public BlogPostJpaDao() {
-        super(BlogPost.class);
+    public CarDealerJpaDao() {
+        super(CarDeal.class);
     }
 
     @Override
-    public Collection<BlogPost> findByTitle(String title) throws RepositoryException {
-        TypedQuery<BlogPost> query = entityManager.createNamedQuery(BlogPost.FIND_BY_TITLE, BlogPost.class);
+    public Collection<CarDeal> findByTitle(String title) throws RepositoryException {
+        TypedQuery<CarDeal> query = entityManager.createNamedQuery(CarDeal.FIND_BY_TITLE, CarDeal.class);
         query.setParameter("title", title);
         return query.getResultList();
     }

@@ -22,7 +22,7 @@ public class JpaService {
     //        final JpaService jpaService = new JpaService();
     //        final EntityManager entityManager = jpaService.getEntityManager();
     //
-    //        final BlogPost blogPost = new BlogPost();
+    //        final CarDeal blogPost = new CarDeal();
     //        blogPost.setTitle("semmi");
     //        blogPost.setWriter("senki");
     //        blogPost.setContent("jrklegfergfykgw");
@@ -33,7 +33,7 @@ public class JpaService {
     //        entityManager.getTransaction().commit();
     //
     //        System.out.println("kisjoker");
-    //        final BlogPost blogPost1 = entityManager.find(BlogPost.class, 1L);
+    //        final CarDeal blogPost1 = entityManager.find(CarDeal.class, 1L);
     //        System.out.println(blogPost1.toString());
     //    }
     //
@@ -42,24 +42,24 @@ public class JpaService {
     //    }
 
 //    @Inject
-//    BlogPostDao blogPostDao;
+//    CarDealerDao blogPostDao;
 //
-//    public BlogPostDao getBlogPostDao() {
+//    public CarDealerDao getBlogPostDao() {
 //        return blogPostDao;
 //    }
 //
 //    public static void main(String[] args) {
-//        final BlogPost blogPost = new BlogPost();
+//        final CarDeal blogPost = new CarDeal();
 //        blogPost.setTitle("semmi");
 //        blogPost.setWriter("senki");
 //        blogPost.setContent("jrklegfergfykgw");
 //        blogPost.setUploadDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
 //
-//        final BlogPostDao blogPostDao = new JpaService().getBlogPostDao();
+//        final CarDealerDao blogPostDao = new JpaService().getBlogPostDao();
 //        blogPostDao.create(blogPost);
 //
 //        System.out.println("kisjoker");
-//        final BlogPost byId = blogPostDao.findById(1L);
+//        final CarDeal byId = blogPostDao.findById(1L);
 //        System.out.println(byId.toString());
 //    }
 }

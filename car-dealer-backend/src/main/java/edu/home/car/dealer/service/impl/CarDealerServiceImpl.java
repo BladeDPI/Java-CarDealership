@@ -1,9 +1,9 @@
 package edu.home.car.dealer.service.impl;
 
-import edu.home.car.dealer.dao.BlogPostDao;
+import edu.home.car.dealer.dao.CarDealerDao;
 import edu.home.car.dealer.dao.RepositoryException;
-import edu.home.car.dealer.model.BlogPost;
-import edu.home.car.dealer.service.BlogPostService;
+import edu.home.car.dealer.model.CarDeal;
+import edu.home.car.dealer.service.CarDealerService;
 import edu.home.car.dealer.service.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +18,17 @@ import java.util.Collection;
 @Stateless
 @DeclareRoles({"test", "blogPost"})
 //@ApplicationScoped
-public class BlogPostServiceImpl implements BlogPostService {
-    private static final Logger LOG = LoggerFactory.getLogger(BlogPostServiceImpl.class);
+public class CarDealerServiceImpl implements CarDealerService {
+    private static final Logger LOG = LoggerFactory.getLogger(CarDealerServiceImpl.class);
 
     @Inject
-    private BlogPostDao blogPostDao;
+    private CarDealerDao carDealerDao;
 
     @Override
     @PermitAll
-    public Collection<BlogPost> findAllBlogPosts() throws ServiceException {
+    public Collection<CarDeal> findAllBlogPosts() throws ServiceException {
         try {
-            return blogPostDao.findAll();
+            return carDealerDao.findAll();
         }
         catch (RepositoryException e) {
             LOG.error("findAllBlogPosts failed", e);
@@ -38,9 +38,9 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     @RolesAllowed("test")
-    public BlogPost findBlogPostById(Long id) throws ServiceException {
+    public CarDeal findBlogPostById(Long id) throws ServiceException {
         try {
-            return blogPostDao.findById(id);
+            return carDealerDao.findById(id);
         }
         catch (RepositoryException e) {
             LOG.error("findBlogPostById failed", e);
@@ -50,9 +50,9 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     @RolesAllowed("test")
-    public void createBlogPost(BlogPost blogPost) throws ServiceException {
+    public void createBlogPost(CarDeal carDeal) throws ServiceException {
         try {
-            blogPostDao.create(blogPost);
+            carDealerDao.create(carDeal);
         }
         catch (RepositoryException e) {
             LOG.error("createBlogPost failed", e);
@@ -61,9 +61,9 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    public Collection<BlogPost> findBlogPostByTitle(String title) throws ServiceException {
+    public Collection<CarDeal> findBlogPostByTitle(String title) throws ServiceException {
         try {
-            return blogPostDao.findByTitle(title);
+            return carDealerDao.findByTitle(title);
         }
         catch (RepositoryException e) {
             LOG.error("findBlogPostByTitle failed", e);

@@ -34,12 +34,12 @@
             <div class="navbar-brand">Blog Posts</a>
         </nav>
 
-        <#list blogPosts as blogPost>
+        <#list carDeals as carDeal>
         <div class="blog-post">
-            <h2 class="blog-post-title">${blogPost.title}</h2>
-            <p class="blog-post-meta">${blogPost.uploadDate?datetime} by <a href="#">${blogPost.writer}</a></p>
+            <h2 class="blog-post-title">${carDeal.title}</h2>
+            <p class="blog-post-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.writer}</a></p>
 
-            <p>${blogPost.content}</p>
+            <p>${carDeal.content}</p>
         </div>
         </#list>
     

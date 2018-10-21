@@ -6,12 +6,12 @@ import java.util.Date;
 @Entity
 @Table(name = "blogPost")
 @NamedQueries({
-    @NamedQuery(name = BlogPost.FIND_BY_TITLE, query = "from BlogPost bp where bp.title like :title")
+    @NamedQuery(name = CarDeal.FIND_BY_TITLE, query = "from CarDeal bp where bp.title like :title")
 })
 
-public class BlogPost extends BaseEntity {
+public class CarDeal extends BaseEntity {
 
-    public static final String FIND_BY_TITLE = "BlogPost.findByTitle";
+    public static final String FIND_BY_TITLE = "CarDeal.findByTitle";
 
     @Column
     private String title;
@@ -55,7 +55,7 @@ public class BlogPost extends BaseEntity {
 
     @Override
     public String toString() {
-        return "BlogPost{" +
+        return "CarDeal{" +
                "id=" + id +
                ", title='" + title + '\'' +
                ", content='" + content + '\'' +

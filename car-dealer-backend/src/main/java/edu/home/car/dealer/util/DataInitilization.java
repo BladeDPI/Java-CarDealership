@@ -10,8 +10,8 @@
  */
 package edu.home.car.dealer.util;
 
-import edu.home.car.dealer.dao.BlogPostDao;
-import edu.home.car.dealer.model.BlogPost;
+import edu.home.car.dealer.dao.CarDealerDao;
+import edu.home.car.dealer.model.CarDeal;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -25,7 +25,7 @@ import java.util.Date;
 @Startup
 public class DataInitilization {
     @Inject
-    private BlogPostDao blogPost;
+    private CarDealerDao blogPost;
 
     @PostConstruct
     private void init() {
@@ -34,12 +34,12 @@ public class DataInitilization {
         blogPost.create(createBlogPost("123123", "24323", "234232"));
     }
 
-    private BlogPost createBlogPost(String semmi, String senki, String jrklegfergfykgw) {
-        final BlogPost blogPost = new BlogPost();
-        blogPost.setTitle(semmi);
-        blogPost.setWriter(senki);
-        blogPost.setContent(jrklegfergfykgw);
-        blogPost.setUploadDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
-        return blogPost;
+    private CarDeal createBlogPost(String semmi, String senki, String jrklegfergfykgw) {
+        final CarDeal carDeal = new CarDeal();
+        carDeal.setTitle(semmi);
+        carDeal.setWriter(senki);
+        carDeal.setContent(jrklegfergfykgw);
+        carDeal.setUploadDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
+        return carDeal;
     }
 }

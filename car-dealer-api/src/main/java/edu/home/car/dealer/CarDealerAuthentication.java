@@ -27,7 +27,7 @@ import javax.ws.rs.core.Response.Status;
 @Path("")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class BlogPostAuthentication {
+public class CarDealerAuthentication {
 
     @Inject
     HttpServletRequest request;

@@ -10,7 +10,7 @@
  */
 package edu.home.car.dealer;
 
-public class BlogPostDto {
+public class CarDealDto {
     private String title;
     private String writer;
 

@@ -10,8 +10,8 @@
  */
 package edu.home.car.dealer;
 
-import edu.home.car.dealer.model.BlogPost;
-import edu.home.car.dealer.service.BlogPostService;
+import edu.home.car.dealer.model.CarDeal;
+import edu.home.car.dealer.service.CarDealerService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,33 +26,33 @@ import java.util.Collection;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 //@Produces("text/plain")
-public class BlogPostResource {
+public class CarDealerResource {
 
     @Inject
-    private BlogPostService blogPostService;
+    private CarDealerService carDealerService;
 
     @GET
     @Path("/")
     public Response findAll() {
 
-        final Collection<BlogPost> allBlogPosts = blogPostService.findAllBlogPosts();
-        ResponseBuilder builder = Response.ok(allBlogPosts);
+        final Collection<CarDeal> allCarDeals = carDealerService.findAllBlogPosts();
+        ResponseBuilder builder = Response.ok(allCarDeals);
         return builder.build();
     }
 
     @GET
     @Path("/{blogPostId}")
     public Response findBlogPostById(@PathParam("blogPostId") Long id) {
-        final BlogPost blogPostById = blogPostService.findBlogPostById(id);
-        ResponseBuilder builder = Response.ok(blogPostById);
+        final CarDeal carDealById = carDealerService.findBlogPostById(id);
+        ResponseBuilder builder = Response.ok(carDealById);
         return builder.build();
     }
 
 //    @POST
 //    @Path("/")
-//    public Response findBlogPostById(BlogPostDto blogPostDto) {
+//    public Response findBlogPostById(CarDealDto blogPostDto) {
 
-//        blogPostService.createBlogPost();
+//        carDealerService.createBlogPost();
 //        ResponseBuilder builder = Response.ok(blogPostById);
 //        return builder.build();
 //    }
