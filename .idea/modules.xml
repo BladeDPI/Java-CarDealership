@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/blog-api/blog-api.iml" filepath="$PROJECT_DIR$/blog-api/blog-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/blog-backend/blog-backend.iml" filepath="$PROJECT_DIR$/blog-backend/blog-backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/blog-parent.iml" filepath="$PROJECT_DIR$/blog-parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/blog-server/blog-server.iml" filepath="$PROJECT_DIR$/blog-server/blog-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/blog-web/blog-web.iml" filepath="$PROJECT_DIR$/blog-web/blog-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java-CarDealership.iml" filepath="$PROJECT_DIR$/Java-CarDealership.iml" />
+      <module fileurl="file://$PROJECT_DIR$/car-dealer-api/car-dealer-api.iml" filepath="$PROJECT_DIR$/car-dealer-api/car-dealer-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/car-dealer-backend/car-dealer-backend.iml" filepath="$PROJECT_DIR$/car-dealer-backend/car-dealer-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/car-dealer-server/car-dealer-server.iml" filepath="$PROJECT_DIR$/car-dealer-server/car-dealer-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/car-dealer-web/car-dealer-web.iml" filepath="$PROJECT_DIR$/car-dealer-web/car-dealer-web.iml" />
     </modules>
   </component>
 </project>

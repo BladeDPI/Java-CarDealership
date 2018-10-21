@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ejb-jar" name="car-dealer-backend:ejb">
+    <output-path>$PROJECT_DIR$/car-dealer-backend/target</output-path>
+    <root id="archive" name="car-dealer-backend-1.0.0-SNAPSHOT.jar">
+      <element id="artifact" artifact-name="car-dealer-backend:ejb exploded" />
+    </root>
+  </artifact>
+</component>

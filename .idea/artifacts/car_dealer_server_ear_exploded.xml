@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="car-dealer-server:ear exploded">
+    <output-path>$PROJECT_DIR$/car-dealer-server/target/blog-server</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="car-dealer-server/javaeeApplication/JavaEE" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/car-dealer-server/target/blog-server/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="archive" name="car-dealer-backend-1.0.0-SNAPSHOT.jar">
+        <element id="artifact" artifact-name="car-dealer-backend:ejb exploded" />
+      </element>
+      <element id="archive" name="car-dealer-web-1.0.0-SNAPSHOT.war">
+        <element id="artifact" artifact-name="car-dealer-web:war exploded" />
+      </element>
+      <element id="archive" name="car-dealer-api-1.0.0-SNAPSHOT.war">
+        <element id="artifact" artifact-name="car-dealer-api:war exploded" />
+      </element>
+    </root>
+  </artifact>
+</component>

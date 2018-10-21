@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="car-dealer-web:war">
+    <output-path>$PROJECT_DIR$/car-dealer-web/target</output-path>
+    <root id="archive" name="car-dealer-web.war">
+      <element id="artifact" artifact-name="car-dealer-web:war exploded" />
+    </root>
+  </artifact>
+</component>
