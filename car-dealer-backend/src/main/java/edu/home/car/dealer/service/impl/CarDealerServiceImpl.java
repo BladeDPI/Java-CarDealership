@@ -16,8 +16,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 
 @Stateless
-@DeclareRoles({"test", "blogPost"})
-//@ApplicationScoped
+@DeclareRoles({"test", "carDealer"})
 public class CarDealerServiceImpl implements CarDealerService {
     private static final Logger LOG = LoggerFactory.getLogger(CarDealerServiceImpl.class);
 
@@ -26,48 +25,48 @@ public class CarDealerServiceImpl implements CarDealerService {
 
     @Override
     @PermitAll
-    public Collection<CarDeal> findAllBlogPosts() throws ServiceException {
+    public Collection<CarDeal> findAllCarDeals() throws ServiceException {
         try {
             return carDealerDao.findAll();
         }
         catch (RepositoryException e) {
-            LOG.error("findAllBlogPosts failed", e);
-            throw new ServiceException("findAllBlogPosts failed", e);
+            LOG.error("findAllCarDeals failed", e);
+            throw new ServiceException("findAllCarDeals failed", e);
         }
     }
 
     @Override
     @RolesAllowed("test")
-    public CarDeal findBlogPostById(Long id) throws ServiceException {
+    public CarDeal findCarDealById(Long id) throws ServiceException {
         try {
             return carDealerDao.findById(id);
         }
         catch (RepositoryException e) {
-            LOG.error("findBlogPostById failed", e);
-            throw new ServiceException("findBlogPostById failed", e);
+            LOG.error("findCarDealById failed", e);
+            throw new ServiceException("findCarDealById failed", e);
         }
     }
 
     @Override
     @RolesAllowed("test")
-    public void createBlogPost(CarDeal carDeal) throws ServiceException {
+    public void createCarDeal(CarDeal carDeal) throws ServiceException {
         try {
             carDealerDao.create(carDeal);
         }
         catch (RepositoryException e) {
-            LOG.error("createBlogPost failed", e);
-            throw new ServiceException("createBlogPost failed", e);
+            LOG.error("createCarDeal failed", e);
+            throw new ServiceException("createCarDeal failed", e);
         }
     }
 
     @Override
-    public Collection<CarDeal> findBlogPostByTitle(String title) throws ServiceException {
+    public Collection<CarDeal> findCarDealByTitle(String title) throws ServiceException {
         try {
             return carDealerDao.findByTitle(title);
         }
         catch (RepositoryException e) {
-            LOG.error("findBlogPostByTitle failed", e);
-            throw new ServiceException("findBlogPostByTitle failed", e);
+            LOG.error("findCarDealByTitle failed", e);
+            throw new ServiceException("findCarDealByTitle failed", e);
         }
     }
 }

@@ -50,7 +50,7 @@ public class CarDealerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("GET received");
-        Collection<CarDeal> carDeals = carDealerService.findAllBlogPosts();
+        Collection<CarDeal> carDeals = carDealerService.findAllCarDeals();
 
         Map<String, Object> model = new HashMap<>();
         model.put("carDeals", carDeals);
@@ -73,7 +73,7 @@ public class CarDealerServlet extends HttpServlet {
         carDeal.setWriter(req.getParameter("writer"));
         carDeal.setContent(req.getParameter("content"));
         carDeal.setUploadDate(new Date());
-        carDealerService.createBlogPost(carDeal);
+        carDealerService.createCarDeal(carDeal);
 
         doGet(req, resp);
     }

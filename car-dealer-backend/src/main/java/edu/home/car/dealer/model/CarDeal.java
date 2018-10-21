@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "blogPost")
+@Table(name = "carDeal")
 @NamedQueries({
     @NamedQuery(name = CarDeal.FIND_BY_TITLE, query = "from CarDeal bp where bp.title like :title")
 })

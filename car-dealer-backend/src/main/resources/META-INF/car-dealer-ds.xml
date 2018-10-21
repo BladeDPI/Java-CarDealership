@@ -2,8 +2,8 @@
 <datasources>
 
     <!-- JTA datasource for EE deployment -->
-    <datasource jndi-name="java:jboss/datasources/blogDS"
-                pool-name="blogDS"
+    <datasource jndi-name="java:jboss/datasources/carDealerDS"
+                pool-name="carDealerDS"
                 enabled="true"
                 use-java-context="true">
 

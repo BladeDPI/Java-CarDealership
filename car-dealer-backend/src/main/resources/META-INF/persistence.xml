@@ -9,7 +9,7 @@
 
     <!-- one persistence unit = we connect to one data source -->
     <!-- "RESOURCE_LOCAL" = locally defined data source, Java SE style -->
-    <persistence-unit name="blogPuLocal" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="carDealPuLocal" transaction-type="RESOURCE_LOCAL">
 
         <!-- list of classes we want to manage with JPA -->
         <class>edu.home.car.dealer.model.CarDeal</class>
@@ -28,11 +28,11 @@
 
 
     <!-- second, JTA based persistence unit -->
-    <persistence-unit name="blogPu" transaction-type="JTA">
+    <persistence-unit name="carDealPu" transaction-type="JTA">
 
         <!-- the JNDI name of the data source for this persistence unit -->
         <!-- it's defined in a "-ds.xml" file next to this one -->
-        <jta-data-source>java:jboss/datasources/blogDS</jta-data-source>
+        <jta-data-source>java:jboss/datasources/carDealerDS</jta-data-source>
 
         <!-- list of classes we want to manage with JPA -->
         <class>edu.home.car.dealer.model.CarDeal</class>

@@ -37,7 +37,7 @@
     </dependencies>
 
     <build>
-        <finalName>car-dealer-api</finalName> <!-- name to use in WildFly deployment -->
+        <finalName>car-dealer-api</finalName>
     </build>
 
 </project>

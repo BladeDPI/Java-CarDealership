@@ -27,7 +27,7 @@ public abstract class AbstractJpaDao<T extends BaseEntity> implements Dao<T> {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractJpaDao.class);
     private Class<T> clazz;
 
-    @PersistenceContext(unitName = "blogPu")
+    @PersistenceContext(unitName = "carDealPu")
     protected EntityManager entityManager;
 
     public AbstractJpaDao(final Class<T> clazz) {

@@ -52,22 +52,6 @@ public class CarDealerAuthentication {
     }
 
     @POST
-    @Path("/login2")
-    public Response login2() {
-        try {
-            if (request.getUserPrincipal() == null) {
-                request.login("kisjoker", "123qweasd");
-                return Response.ok("Login successful").build();
-            } else {
-                return Response.ok("Already loged in").build();
-            }
-        }
-        catch (ServletException e) {
-            return Response.status(Status.UNAUTHORIZED).build();
-        }
-    }
-
-    @POST
     @Path("/logout")
     public Response logout() {
         try {

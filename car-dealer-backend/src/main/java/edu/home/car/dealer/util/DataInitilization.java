@@ -30,11 +30,11 @@ public class DataInitilization {
     @PostConstruct
     private void init() {
 
-        blogPost.create(createBlogPost("semmi", "senki", "jrklegfergfykgw"));
-        blogPost.create(createBlogPost("123123", "24323", "234232"));
+        blogPost.create(createCarDeals("semmi", "senki", "jrklegfergfykgw"));
+        blogPost.create(createCarDeals("123123", "24323", "234232"));
     }
 
-    private CarDeal createBlogPost(String semmi, String senki, String jrklegfergfykgw) {
+    private CarDeal createCarDeals(String semmi, String senki, String jrklegfergfykgw) {
         final CarDeal carDeal = new CarDeal();
         carDeal.setTitle(semmi);
         carDeal.setWriter(senki);

@@ -22,10 +22,9 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import java.util.Collection;
 
 @ApplicationScoped
-@Path("/blogPosts")
+@Path("/carDeals")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-//@Produces("text/plain")
 public class CarDealerResource {
 
     @Inject
@@ -35,25 +34,16 @@ public class CarDealerResource {
     @Path("/")
     public Response findAll() {
 
-        final Collection<CarDeal> allCarDeals = carDealerService.findAllBlogPosts();
+        final Collection<CarDeal> allCarDeals = carDealerService.findAllCarDeals();
         ResponseBuilder builder = Response.ok(allCarDeals);
         return builder.build();
     }
 
     @GET
-    @Path("/{blogPostId}")
-    public Response findBlogPostById(@PathParam("blogPostId") Long id) {
-        final CarDeal carDealById = carDealerService.findBlogPostById(id);
+    @Path("/{carDealId}")
+    public Response findCarDealById(@PathParam("carDealId") Long id) {
+        final CarDeal carDealById = carDealerService.findCarDealById(id);
         ResponseBuilder builder = Response.ok(carDealById);
         return builder.build();
     }
-
-//    @POST
-//    @Path("/")
-//    public Response findBlogPostById(CarDealDto blogPostDto) {
-
-//        carDealerService.createBlogPost();
-//        ResponseBuilder builder = Response.ok(blogPostById);
-//        return builder.build();
-//    }
 }
