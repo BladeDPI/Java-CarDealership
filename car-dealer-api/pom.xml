@@ -22,6 +22,12 @@
             <type>ejb</type>
         </dependency>
         <dependency>
+            <groupId>edu.home.car.dealer</groupId>
+            <artifactId>car-dealer-commons</artifactId>
+            <scope>provided</scope>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>

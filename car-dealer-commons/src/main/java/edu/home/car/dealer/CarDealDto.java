@@ -10,9 +10,14 @@
  */
 package edu.home.car.dealer;
 
-public class CarDealDto {
+import java.io.Serializable;
+
+public class CarDealDto implements Serializable {
     private String title;
     private String writer;
+
+    public CarDealDto() {
+    }
 
     public String getTitle() {
         return title;

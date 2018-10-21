@@ -22,6 +22,7 @@
         <module>car-dealer-web</module>
         <module>car-dealer-server</module>
         <module>car-dealer-api</module>
+        <module>car-dealer-commons</module>
     </modules>
 
     <build>
@@ -64,6 +65,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>car-dealer-backend</artifactId>
+                <version>${project.version}</version>
+                <type>ejb</type>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>car-dealer-commons</artifactId>
                 <version>${project.version}</version>
                 <type>ejb</type>
             </dependency>

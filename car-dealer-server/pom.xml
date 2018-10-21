@@ -21,6 +21,11 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>car-dealer-commons</artifactId>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>car-dealer-web</artifactId>
             <type>war</type>
         </dependency>
@@ -32,7 +37,7 @@
     </dependencies>
 
     <build>
-        <finalName>blog-server</finalName> <!-- name to use in WildFly deployment -->
+        <finalName>car-dealer-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>

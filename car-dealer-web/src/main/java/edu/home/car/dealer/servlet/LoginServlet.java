@@ -1,6 +1,6 @@
 package edu.home.car.dealer.servlet;
 
-import edu.home.car.dealer.model.CarDeal;
+import edu.home.car.dealer.LoginDto;
 import edu.home.car.dealer.service.CarDealerService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -15,10 +15,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
@@ -65,8 +70,16 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("Login POST received");
 
-        final String userName = req.getParameter("userName");
-        final String password = req.getParameter("password");
+        ClientConfig config = new DefaultClientConfig();
+        Client client = Client.create(config);
+        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/login").build());
+
+        final LoginDto loginDto = new LoginDto();
+        loginDto.setUsername(req.getParameter("userName"));
+        loginDto.setPassword(req.getParameter("password"));
+
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
+        System.out.println("Response -" + response.getEntity(String.class));
     }
 }
 

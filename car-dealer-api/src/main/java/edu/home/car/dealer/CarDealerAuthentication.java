@@ -15,10 +15,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -40,6 +37,8 @@ public class CarDealerAuthentication {
     public Response login(LoginDto loginDto) {
         try {
             if (request.getUserPrincipal() == null) {
+                //TODO getUserPrincipal is always NULL
+                request.getSession(true);
                 request.login(loginDto.getUsername(), loginDto.getPassword());
                 return Response.ok("Login successful").build();
             } else {
@@ -47,7 +46,7 @@ public class CarDealerAuthentication {
             }
         }
         catch (ServletException e) {
-            return Response.status(Status.UNAUTHORIZED).build();
+            return Response.status(Status.UNAUTHORIZED).entity("Failed to login").build();
         }
     }
 
