@@ -20,9 +20,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/carDeals")
-public class CarDealerServlet extends HttpServlet {
-    private static final Logger LOG = LoggerFactory.getLogger(CarDealerServlet.class);
+@WebServlet(urlPatterns = "/login")
+public class LoginServlet extends HttpServlet {
+    private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 
     private Template freemarkerTemplate;
 
@@ -39,7 +39,7 @@ public class CarDealerServlet extends HttpServlet {
         super.init();
 
         try {
-            freemarkerTemplate = configuration.getTemplate("carDeals.ftl");
+            freemarkerTemplate = configuration.getTemplate("login.ftl");
         }
         catch (IOException e) {
             LOG.error("Failed to read template");
@@ -49,13 +49,10 @@ public class CarDealerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOG.info("Car Dealer GET received");
-        Collection<CarDeal> carDeals = carDealerService.findAllCarDeals();
+        LOG.info("Login GET received");
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("carDeals", carDeals);
         try {
-            freemarkerTemplate.process(model, resp.getWriter());
+            freemarkerTemplate.process(null, resp.getWriter());
         }
         catch (TemplateException e) {
             LOG.error("Could not render template");
@@ -66,16 +63,10 @@ public class CarDealerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOG.info("Car Dealer POST received");
+        LOG.info("Login POST received");
 
-        CarDeal carDeal = new CarDeal();
-        carDeal.setTitle(req.getParameter("title"));
-        carDeal.setWriter(req.getParameter("writer"));
-        carDeal.setContent(req.getParameter("content"));
-        carDeal.setUploadDate(new Date());
-        carDealerService.createCarDeal(carDeal);
-
-        doGet(req, resp);
+        final String userName = req.getParameter("userName");
+        final String password = req.getParameter("password");
     }
 }
 

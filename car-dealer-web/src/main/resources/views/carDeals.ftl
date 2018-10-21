@@ -11,16 +11,16 @@
             font-size: 30px;
         }
 
-        .blog-post-title {
+        .car-deals-title {
             font-size: 24px;
             padding-top: 30px;
         }
 
-        .blog-post-meta {
+        .car-deals-meta {
             color: #888888;
         }
 
-        .blog-post {
+        .car-deals {
             margin-bottom: 30px;
             border-bottom: 1px solid grey;
         }
@@ -31,19 +31,19 @@
     <div class="container">
 
         <nav class="navbar navbar-dark bg-dark">
-            <div class="navbar-brand">Blog Posts</a>
+            <div class="navbar-brand">Car Deals</a></div>
         </nav>
 
         <#list carDeals as carDeal>
-        <div class="blog-post">
-            <h2 class="blog-post-title">${carDeal.title}</h2>
-            <p class="blog-post-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.writer}</a></p>
+        <div class="car-deals">
+            <h2 class="car-deals-title">${carDeal.title}</h2>
+            <p class="car-deals-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.writer}</a></p>
 
             <p>${carDeal.content}</p>
         </div>
         </#list>
     
-        <h2>Add new blog post</h2>
+        <h2>Add new car deal</h2>
 
         <form method="POST">
             <label for="title">Title:</label> <input type="text" name="title" required> <br>
