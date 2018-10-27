@@ -1,7 +1,6 @@
 package edu.home.car.dealer.servlet;
 
 import edu.home.car.dealer.LoginDto;
-import edu.home.car.dealer.service.CarDealerService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -30,9 +29,6 @@ public class LoginServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 
     private Template freemarkerTemplate;
-
-    // sure is ugly to initialize a dependency here
-    // I wonder if there is a more elegant way...
 
     @Inject
     private Configuration configuration;

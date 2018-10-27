@@ -1,7 +1,12 @@
 package edu.home.car.dealer.servlet;
 
-import edu.home.car.dealer.model.CarDeal;
-import edu.home.car.dealer.service.CarDealerService;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import edu.home.car.dealer.CarDealDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -14,22 +19,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet(urlPatterns = "/carDeals")
 public class CarDealerServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(CarDealerServlet.class);
 
     private Template freemarkerTemplate;
-
-    // sure is ugly to initialize a dependency here
-    // I wonder if there is a more elegant way...
-    @Inject
-    private CarDealerService carDealerService;
 
     @Inject
     private Configuration configuration;
@@ -49,9 +48,20 @@ public class CarDealerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOG.info("Car Dealer GET received");
-        Collection<CarDeal> carDeals = carDealerService.findAllCarDeals();
+        LOG.info("GET all Car deals");
 
+        ClientConfig config = new DefaultClientConfig();
+        Client client = Client.create(config);
+        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        Collection<CarDealDto> carDeals = response.getEntity(new GenericType<List<CarDealDto>>() {
+        });
+
+        showCars(resp, carDeals);
+    }
+
+    private void showCars(HttpServletResponse resp, Collection<CarDealDto> carDeals) throws IOException {
         Map<String, Object> model = new HashMap<>();
         model.put("carDeals", carDeals);
         try {
@@ -64,18 +74,22 @@ public class CarDealerServlet extends HttpServlet {
         }
     }
 
-//    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        LOG.info("Car Dealer POST received");
-//
-//        CarDeal carDeal = new CarDeal();
-//        carDeal.setTitle(req.getParameter("title"));
-//        carDeal.setWriter(req.getParameter("writer"));
-//        carDeal.setContent(req.getParameter("content"));
-//        carDeal.setUploadDate(new Date());
-//        carDealerService.createCarDeal(carDeal);
-//
-//        doGet(req, resp);
-//    }
+    @Override
+    //TODO Authorization
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LOG.info("Car Dealer POST received");
+
+        final String id = req.getParameter("id");
+
+        ClientConfig config = new DefaultClientConfig();
+        Client client = Client.create(config);
+        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+
+        ClientResponse response = service.path(id).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        Collection<CarDealDto> carDeals = response.getEntity(new GenericType<List<CarDealDto>>() {
+        });
+
+        showCars(resp, carDeals);
+    }
 }
 

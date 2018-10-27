@@ -42,7 +42,7 @@ public class CarDealerAuthentication {
                 request.login(loginDto.getUsername(), loginDto.getPassword());
                 return Response.ok("Login successful").build();
             } else {
-                return Response.ok("Already loged in").build();
+                return Response.ok("Already logged in").build();
             }
         }
         catch (ServletException e) {
@@ -55,6 +55,7 @@ public class CarDealerAuthentication {
     public Response logout() {
         try {
             if (request.getUserPrincipal() != null) {
+                request.getSession(true);
                 request.logout();
                 session.invalidate();
                 return Response.ok("Logout successful").build();

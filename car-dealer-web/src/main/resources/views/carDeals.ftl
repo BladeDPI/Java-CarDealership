@@ -52,6 +52,30 @@
             background-color: black;
             color: white;
         }
+
+        a:link {
+            color: green;
+            background-color: transparent;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: pink;
+            background-color: transparent;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: red;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+        a:active {
+            color: yellow;
+            background-color: transparent;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -61,6 +85,8 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="navbar-brand">Car Deals</a></div>
     </nav>
+
+    <a href="http://localhost:8080/car-dealer-web/login"><h2>Login</h2></a>
 
         <#list carDeals as carDeal>
         <div class="car-deals">
@@ -129,14 +155,12 @@
         </div>
         </#list>
 
-    <#--<h2>Add new car deal</h2>-->
+    <h2>Find by ID</h2>
 
-    <#--<form method="POST">-->
-        <#--<label for="title">Title:</label> <input type="text" name="title" required> <br>-->
-        <#--<label for="writer">Writer:</label> <input type="text" name="writer" required> <br>-->
-        <#--<label for="content">Content:</label> <input type="textarea" name="content" required> <br>-->
-        <#--<button type="submit">Submit</button>-->
-    <#--</form>-->
+    <form method="POST">
+        <label for="title">ID:</label> <input type="text" name="id" required> <br>
+        <button type="submit">FIND</button>
+    </form>
 </div>
 </body>
 </html>

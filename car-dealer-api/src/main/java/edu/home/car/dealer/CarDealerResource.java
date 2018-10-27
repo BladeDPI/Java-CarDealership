@@ -33,7 +33,6 @@ public class CarDealerResource {
     @GET
     @Path("/")
     public Response findAll() {
-
         final Collection<CarDeal> allCarDeals = carDealerService.findAllCarDeals();
         ResponseBuilder builder = Response.ok(allCarDeals);
         return builder.build();
