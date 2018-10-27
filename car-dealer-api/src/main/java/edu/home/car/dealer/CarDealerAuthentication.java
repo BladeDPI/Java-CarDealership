@@ -37,8 +37,6 @@ public class CarDealerAuthentication {
     public Response login(LoginDto loginDto) {
         try {
             if (request.getUserPrincipal() == null) {
-                //TODO session getUserPrincipal is always NULL
-                request.getSession(true);
                 request.login(loginDto.getUsername(), loginDto.getPassword());
                 return Response.ok("Login successful").build();
             } else {
@@ -55,7 +53,6 @@ public class CarDealerAuthentication {
     public Response logout() {
         try {
             if (request.getUserPrincipal() != null) {
-                request.getSession(true);
                 request.logout();
                 session.invalidate();
                 return Response.ok("Logout successful").build();

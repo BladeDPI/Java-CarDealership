@@ -75,7 +75,6 @@ public class CarDealerServlet extends HttpServlet {
     }
 
     @Override
-    //TODO Authorization
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("Car Dealer POST received");
 

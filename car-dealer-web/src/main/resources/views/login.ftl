@@ -34,12 +34,6 @@
             opacity: 0.8;
         }
 
-        .cancelbtn {
-            width: auto;
-            padding: 10px 18px;
-            background-color: #f44336;
-        }
-
         .imgcontainer {
             text-align: center;
             margin: 24px 0 12px 0;
@@ -54,22 +48,12 @@
             padding: 16px;
         }
 
-        span.psw {
-            float: right;
-            padding-top: 16px;
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
         }
 
-        /* Change styles for span and cancel button on extra small screens */
-        @media screen and (max-width: 300px) {
-            span.psw {
-                display: block;
-                float: none;
-            }
-
-            .cancelbtn {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -84,15 +68,21 @@
 
     <div class="container">
         <label for="userName"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="userName" required>
+        <input type="text" placeholder="Enter Username" name="userName" value=${userName} required>
 
         <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
+        <input type="password" placeholder="Enter Password" name="password"  value=${password} required>
 
-        <div>
-            <button type="submit" name="button" value="login">Login</button>
-            <button type="submit" name="button" value="logout">Logout</button>
-        </div>
+        <table>
+            <tr>
+                <td>
+                    <button type="submit" name="button" value="login">Login</button>
+                </td>
+                <td>
+                    <button type="submit" name="button" value="logout">Logout</button>
+                </td>
+            </tr>
+        </table>
     </div>
 </form>
 
