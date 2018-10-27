@@ -15,7 +15,7 @@ public class FreemarkerFactory {
     public static Configuration getFreemarkerConfiguration() {
         if (freemarkerConfiguration == null) {
             freemarkerConfiguration = new Configuration(Configuration.VERSION_2_3_28);
-            ClassLoader classLoader = FreemarkerFactory.class.getClassLoader();
+            final ClassLoader classLoader = FreemarkerFactory.class.getClassLoader();
             freemarkerConfiguration.setClassLoaderForTemplateLoading(classLoader, VIEWS_PACKAGE);
         }
         return freemarkerConfiguration;

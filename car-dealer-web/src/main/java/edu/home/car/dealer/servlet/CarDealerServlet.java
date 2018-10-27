@@ -19,10 +19,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.util.*;
+
 
 @WebServlet(urlPatterns = "/carDeals")
 public class CarDealerServlet extends HttpServlet {
@@ -50,19 +53,19 @@ public class CarDealerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("GET all Car deals");
 
-        ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+        final ClientConfig config = new DefaultClientConfig();
+        final Client client = Client.create(config);
+        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
 
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        Collection<CarDealDto> carDeals = response.getEntity(new GenericType<List<CarDealDto>>() {
+        final ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        final Collection<CarDealDto> carDeals = response.getEntity(new GenericType<List<CarDealDto>>() {
         });
 
         showCars(resp, carDeals);
     }
 
     private void showCars(HttpServletResponse resp, Collection<CarDealDto> carDeals) throws IOException {
-        Map<String, Object> model = new HashMap<>();
+        final Map<String, Object> model = new HashMap<>();
         model.put("carDeals", carDeals);
         try {
             freemarkerTemplate.process(model, resp.getWriter());
@@ -80,12 +83,16 @@ public class CarDealerServlet extends HttpServlet {
 
         final String id = req.getParameter("id");
 
-        ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+        final ClientConfig config = new DefaultClientConfig();
+        final Client client = Client.create(config);
+        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
 
-        ClientResponse response = service.path(id).cookie(LoginServlet.cookie).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        CarDealDto carDeals = response.getEntity(CarDealDto.class);
+        final HttpSession session = req.getSession(true);
+        final String sessionId = session.getId();
+        final NewCookie cookie = SessionManager.getCookie(sessionId);
+
+        final ClientResponse response = service.path(id).cookie(cookie).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        final CarDealDto carDeals = response.getEntity(CarDealDto.class);
 
         showCars(resp, Collections.singleton(carDeals));
     }

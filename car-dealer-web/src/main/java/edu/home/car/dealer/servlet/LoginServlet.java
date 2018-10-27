@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.UriBuilder;
@@ -31,8 +32,6 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
-    //TODO cookies for users
-    public static NewCookie cookie;
 
     private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 
@@ -61,7 +60,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void showLog(HttpServletResponse resp, String login, String userName, String password) throws IOException {
-        Map<String, String> model = new HashMap<>();
+        final  Map<String, String> model = new HashMap<>();
         model.put("login", login);
         model.put("userName", userName);
         model.put("password", password);
@@ -79,46 +78,51 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("Login POST received");
 
-        String button = req.getParameter("button");
-        String userName = req.getParameter("userName");
-        String password = req.getParameter("password");
+        final String button = req.getParameter("button");
+        final String userName = req.getParameter("userName");
+        final String password = req.getParameter("password");
+
+        final HttpSession session = req.getSession(true);
+        final String sessionId = session.getId();
 
         if (button.equals("login")) {
-            login(resp, userName, password);
+            login(resp, sessionId, userName, password);
         } else {
-            logout(resp, userName, password);
+            logout(resp, sessionId, userName, password);
         }
     }
 
-    private void login(HttpServletResponse resp, String userName, String password) throws IOException {
-        ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/login").build());
+    private void login(HttpServletResponse resp, String sessionId, String userName, String password) throws IOException {
+        final ClientConfig config = new DefaultClientConfig();
+        final Client client = Client.create(config);
+        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/login").build());
 
         final LoginDto loginDto = new LoginDto();
         loginDto.setUsername(userName);
         loginDto.setPassword(password);
 
-        ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
+        final NewCookie cookie = SessionManager.getCookie(sessionId);
+        final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
 
-        List<NewCookie> newCookies = response.getCookies();
-        if (newCookies != null && newCookies.size() > 0) {
-            cookie = newCookies.get(0);
+        final List<NewCookie> newCookies = response.getCookies();
+        if (newCookies != null && newCookies.size() > 0 ) {
+            SessionManager.putCookie(sessionId, newCookies.get(0));
         }
 
         showLog(resp, response.getEntity(String.class), loginDto.getUsername(), loginDto.getPassword());
     }
 
-    private void logout(HttpServletResponse resp,String userName, String password) throws IOException {
-        ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
+    private void logout(HttpServletResponse resp, String sessionId, String userName, String password) throws IOException {
+        final ClientConfig config = new DefaultClientConfig();
+        final Client client = Client.create(config);
         WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/logout").build());
 
-        ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
+        final NewCookie cookie = SessionManager.getCookie(sessionId);
+        final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
 
-        List<NewCookie> newCookies = response.getCookies();
+        final List<NewCookie> newCookies = response.getCookies();
         if (newCookies != null && newCookies.size() > 0) {
-            cookie = newCookies.get(0);
+            SessionManager.putCookie(sessionId, newCookies.get(0));
         }
 
         showLog(resp, response.getEntity(String.class), userName, password);
