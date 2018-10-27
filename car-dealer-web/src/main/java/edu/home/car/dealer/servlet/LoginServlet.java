@@ -14,9 +14,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.UriBuilder;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -26,6 +31,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
+    public static NewCookie cookie;
+
     private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 
     private Template freemarkerTemplate;
@@ -39,8 +46,7 @@ public class LoginServlet extends HttpServlet {
 
         try {
             freemarkerTemplate = configuration.getTemplate("login.ftl");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOG.error("Failed to read template");
         }
         LOG.info("Blog post edu.wk.blog.servlet initialized");
@@ -50,10 +56,16 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("Login GET received");
 
+        showLog(resp, "Please login");
+    }
+
+    private void showLog(HttpServletResponse resp, String login) throws IOException {
+        Map<String, String> model = new HashMap<>();
+        model.put("login", login);
+
         try {
-            freemarkerTemplate.process(null, resp.getWriter());
-        }
-        catch (TemplateException e) {
+            freemarkerTemplate.process(model, resp.getWriter());
+        } catch (TemplateException e) {
             LOG.error("Could not render template");
             resp.getWriter().println("Could not render template");
             resp.setStatus(500);
@@ -64,6 +76,16 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("Login POST received");
 
+        String button = req.getParameter("button");
+
+        if (button.equals("login")) {
+            login(req, resp);
+        } else {
+            logout(resp);
+        }
+    }
+
+    private void login(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/login").build());
@@ -72,8 +94,30 @@ public class LoginServlet extends HttpServlet {
         loginDto.setUsername(req.getParameter("userName"));
         loginDto.setPassword(req.getParameter("password"));
 
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
-        System.out.println("Response - " + response.getEntity(String.class));
+
+        ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
+
+        List<NewCookie> newCookies = response.getCookies();
+        if (newCookies != null && newCookies.size() > 0) {
+            cookie = newCookies.get(0);
+        }
+
+        showLog(resp, response.getEntity(String.class));
+    }
+
+    private void logout(HttpServletResponse resp) throws IOException {
+        ClientConfig config = new DefaultClientConfig();
+        Client client = Client.create(config);
+        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/logout").build());
+
+        ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
+
+        List<NewCookie> newCookies = response.getCookies();
+        if (newCookies != null && newCookies.size() > 0) {
+            cookie = newCookies.get(0);
+        }
+
+        showLog(resp, response.getEntity(String.class));
     }
 }
 

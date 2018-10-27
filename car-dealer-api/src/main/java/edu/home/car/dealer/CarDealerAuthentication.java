@@ -60,11 +60,11 @@ public class CarDealerAuthentication {
                 session.invalidate();
                 return Response.ok("Logout successful").build();
             } else {
-                return Response.status(Status.BAD_REQUEST).build();
+                return Response.status(Status.BAD_REQUEST).entity("Already logged out").build();
             }
         }
         catch (ServletException e) {
-            return Response.status(Status.FORBIDDEN).build();
+            return Response.status(Status.FORBIDDEN).entity("Failed to logout").build();
         }
     }
 }

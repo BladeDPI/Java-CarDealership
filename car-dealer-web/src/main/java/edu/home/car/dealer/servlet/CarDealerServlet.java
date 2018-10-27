@@ -85,11 +85,10 @@ public class CarDealerServlet extends HttpServlet {
         Client client = Client.create(config);
         WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
 
-        ClientResponse response = service.path(id).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        Collection<CarDealDto> carDeals = response.getEntity(new GenericType<List<CarDealDto>>() {
-        });
+        ClientResponse response = service.path(id).cookie(LoginServlet.cookie).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        CarDealDto carDeals = response.getEntity(CarDealDto.class);
 
-        showCars(resp, carDeals);
+        showCars(resp, Collections.singleton(carDeals));
     }
 }
 
