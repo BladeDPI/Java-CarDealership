@@ -33,8 +33,6 @@ public class LoginServlet extends HttpServlet {
 
     // sure is ugly to initialize a dependency here
     // I wonder if there is a more elegant way...
-    @Inject
-    private CarDealerService carDealerService;
 
     @Inject
     private Configuration configuration;
@@ -79,7 +77,7 @@ public class LoginServlet extends HttpServlet {
         loginDto.setPassword(req.getParameter("password"));
 
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
-        System.out.println("Response -" + response.getEntity(String.class));
+        System.out.println("Response - " + response.getEntity(String.class));
     }
 }
 

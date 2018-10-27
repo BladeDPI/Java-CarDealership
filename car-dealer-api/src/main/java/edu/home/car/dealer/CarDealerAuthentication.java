@@ -37,7 +37,7 @@ public class CarDealerAuthentication {
     public Response login(LoginDto loginDto) {
         try {
             if (request.getUserPrincipal() == null) {
-                //TODO getUserPrincipal is always NULL
+                //TODO session getUserPrincipal is always NULL
                 request.getSession(true);
                 request.login(loginDto.getUsername(), loginDto.getPassword());
                 return Response.ok("Login successful").build();

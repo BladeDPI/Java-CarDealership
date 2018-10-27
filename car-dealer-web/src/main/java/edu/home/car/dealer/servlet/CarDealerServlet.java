@@ -44,7 +44,7 @@ public class CarDealerServlet extends HttpServlet {
         catch (IOException e) {
             LOG.error("Failed to read template");
         }
-        LOG.info("Blog post edu.wk.blog.servlet initialized");
+        LOG.info("Blog post edu.home.car.dealer.servlet initialized");
     }
 
     @Override
@@ -64,18 +64,18 @@ public class CarDealerServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOG.info("Car Dealer POST received");
-
-        CarDeal carDeal = new CarDeal();
-        carDeal.setTitle(req.getParameter("title"));
-        carDeal.setWriter(req.getParameter("writer"));
-        carDeal.setContent(req.getParameter("content"));
-        carDeal.setUploadDate(new Date());
-        carDealerService.createCarDeal(carDeal);
-
-        doGet(req, resp);
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        LOG.info("Car Dealer POST received");
+//
+//        CarDeal carDeal = new CarDeal();
+//        carDeal.setTitle(req.getParameter("title"));
+//        carDeal.setWriter(req.getParameter("writer"));
+//        carDeal.setContent(req.getParameter("content"));
+//        carDeal.setUploadDate(new Date());
+//        carDealerService.createCarDeal(carDeal);
+//
+//        doGet(req, resp);
+//    }
 }
 
