@@ -1,9 +1,11 @@
-package edu.home.car.dealer;
+package edu.home.car.dealer.freemarker;
 
-import java.io.Serializable;
+import edu.home.car.dealer.CarDto;
+import edu.home.car.dealer.PersonDto;
+
 import java.util.Date;
 
-public class CarDto implements Serializable {
+public class CarDtoFreemarker {
 
     private Long id;
     private String title;
@@ -21,9 +23,26 @@ public class CarDto implements Serializable {
     private String transmission;
     private Date uploadDate;
     private PersonDto seller;
-    private OptionsDto options;
+    private OptionDtoFreemarker options;
 
-    public CarDto() {
+    public CarDtoFreemarker(CarDto carDto){
+        this.id = carDto.getId();
+        this.title = carDto.getTitle();
+        this.price = carDto.getPrice();
+        this.make = carDto.getMake();
+        this.model = carDto.getModel();
+        this.trim = carDto.getTrim();
+        this.km = carDto.getKm();
+        this.year = carDto.getYear();
+        this.fuelType = carDto.getFuelType();
+        this.bodyType = carDto.getBodyType();
+        this.color = carDto.getColor();
+        this.city = carDto.getCity();
+        this.power = carDto.getPower();
+        this.transmission = carDto.getTransmission();
+        this.uploadDate = carDto.getUploadDate();
+        this.seller = carDto.getSeller();
+        this.options = new OptionDtoFreemarker((carDto.getOptions()));
     }
 
     public Long getId() {
@@ -150,15 +169,15 @@ public class CarDto implements Serializable {
         return seller;
     }
 
-    public void setSeller(PersonDto person) {
-        this.seller = person;
+    public void setSeller(PersonDto seller) {
+        this.seller = seller;
     }
 
-    public OptionsDto getOptions() {
+    public OptionDtoFreemarker getOptions() {
         return options;
     }
 
-    public void setOptions(OptionsDto options) {
+    public void setOptions(OptionDtoFreemarker options) {
         this.options = options;
     }
 }

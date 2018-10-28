@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import edu.home.car.dealer.CarDto;
+import edu.home.car.dealer.freemarker.CarDtoFreemarker;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -42,15 +43,14 @@ public class CarDealerServlet extends HttpServlet {
 
         try {
             freemarkerTemplate = configuration.getTemplate("carDeals.ftl");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOG.error("Failed to read template");
         }
         LOG.info("Blog post edu.home.car.dealer.servlet initialized");
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOG.info("GET all Car deals");
 
         final ClientConfig config = new DefaultClientConfig();
@@ -66,11 +66,16 @@ public class CarDealerServlet extends HttpServlet {
 
     private void showCars(HttpServletResponse resp, Collection<CarDto> carDeals) throws IOException {
         final Map<String, Object> model = new HashMap<>();
-        model.put("carDeals", carDeals);
+
+        Collection<CarDtoFreemarker> carDtoFreemarker = new ArrayList<>();
+        for (CarDto carDto : carDeals) {
+            carDtoFreemarker.add(new CarDtoFreemarker(carDto));
+        }
+
+        model.put("carDeals", carDtoFreemarker);
         try {
             freemarkerTemplate.process(model, resp.getWriter());
-        }
-        catch (TemplateException e) {
+        } catch (TemplateException e) {
             LOG.error("Could not render template");
             resp.getWriter().println("Could not render template");
             resp.setStatus(500);
@@ -78,7 +83,7 @@ public class CarDealerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOG.info("Car Dealer POST received");
 
         final String id = req.getParameter("id");
@@ -93,6 +98,11 @@ public class CarDealerServlet extends HttpServlet {
 
         final ClientResponse response = service.path(id).cookie(cookie).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         final CarDto carDeals = response.getEntity(CarDto.class);
+
+        final List<NewCookie> newCookies = response.getCookies();
+        if (newCookies != null && newCookies.size() > 0) {
+            SessionManager.putCookie(sessionId, newCookies.get(0));
+        }
 
         showCars(resp, Collections.singleton(carDeals));
     }

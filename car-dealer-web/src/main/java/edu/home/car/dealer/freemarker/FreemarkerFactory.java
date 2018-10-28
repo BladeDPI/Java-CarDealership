@@ -1,4 +1,4 @@
-package edu.home.car.dealer.servlet;
+package edu.home.car.dealer.freemarker;
 
 import freemarker.template.Configuration;
 

@@ -3,7 +3,7 @@ package edu.home.car.dealer;
 import java.io.Serializable;
 import java.util.List;
 
-public class PersonDTO implements Serializable {
+public class PersonDto implements Serializable {
 
     private Long id;
     private String profileName;
@@ -13,7 +13,7 @@ public class PersonDTO implements Serializable {
     private String city;
     private List<CarDto> cars;
 
-    public PersonDTO() {
+    public PersonDto() {
     }
 
     public Long getId() {

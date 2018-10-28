@@ -12,8 +12,16 @@
             font-size: 30px;
         }
 
+        .car-basic-information {
+            background-color: aqua;
+        }
+
+        .car-options {
+            background-color: chartreuse;
+        }
+
         .car-deals-title {
-            font-size: 24px;
+            font-size: 16px;
             padding-top: 30px;
         }
 
@@ -91,8 +99,10 @@
         <#list carDeals as carDeal>
         <div class="car-deals">
             <h2 class="car-deals-title">${carDeal.title}</h2>
-            <p class="car-deals-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.seller.profileName}</a></p>
+            <p class="car-deals-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.seller.profileName}</a>
+            </p>
 
+            <h3 class="car-basic-information" style="text-align:center;">Basic Information</h3>
 
             <table id="t01">
                 <tr>
@@ -150,6 +160,31 @@
                 <tr>
                     <td><b>Transmission</b></td>
                     <td>${carDeal.transmission}</td>
+                </tr>
+            </table>
+
+            <h3 class="car-options" style="text-align:center;">Options</h3>
+
+            <table id="t01">
+                <tr>
+                    <td>${carDeal.options.abs}</td>
+                    <td>${carDeal.options.airbag}</td>
+                    <td>${carDeal.options.alarm}</td>
+                </tr>
+                <tr>
+                    <td>${carDeal.options.alloyWheels}</td>
+                    <td>${carDeal.options.centralLocking}</td>
+                    <td>${carDeal.options.cruiseControl}</td>
+                </tr>
+                <tr>
+                    <td>${carDeal.options.electricMirrors}</td>
+                    <td>${carDeal.options.electricWindows}</td>
+                    <td>${carDeal.options.tripComputer}</td>
+                </tr>
+                <tr>
+                    <td>${carDeal.options.leather}</td>
+                    <td>${carDeal.options.powerSteering}</td>
+                    <td></td>
                 </tr>
             </table>
         </div>

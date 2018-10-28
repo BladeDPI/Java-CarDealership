@@ -49,10 +49,14 @@ public class Car extends BaseEntity {
     @ManyToOne (cascade=CascadeType.ALL)
     private Person seller;
 
+    @JsonManagedReference
+    @OneToOne (cascade=CascadeType.ALL)
+    private Options options;
+
     public Car() {
     }
 
-    private Car(String title, int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Date uploadDate, Person seller) {
+    private Car(String title, int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Date uploadDate, Person seller, Options options) {
         this.title = title;
         this.price = price;
         this.make = make;
@@ -68,6 +72,7 @@ public class Car extends BaseEntity {
         this.transmission = transmission;
         this.uploadDate = uploadDate;
         this.seller = seller;
+        this.options = options;
     }
 
     public String getTitle() {
@@ -190,6 +195,14 @@ public class Car extends BaseEntity {
         this.seller = seller;
     }
 
+    public Options getOptions() {
+        return options;
+    }
+
+    public void setOptions(Options options) {
+        this.options = options;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -226,6 +239,7 @@ public class Car extends BaseEntity {
         private String transmission;
         private Date uploadDate;
         private Person seller;
+        private Options options;
 
         public CarBuilder price(int price) {
             this.price = price;
@@ -297,6 +311,11 @@ public class Car extends BaseEntity {
             return this;
         }
 
+        public CarBuilder options(Options options) {
+            this.options = options;
+            return this;
+        }
+
         public Car createCar() {
 
             title = year + " " + make + " " + model + " " + trim;
@@ -307,7 +326,7 @@ public class Car extends BaseEntity {
 
             return new Car(
                     title, price, make, model, trim, km, year, fuelType, bodyType,
-                    color, city, power, transmission, uploadDate, seller);
+                    color, city, power, transmission, uploadDate, seller, options);
         }
 
         private boolean isNotValid() {
@@ -325,7 +344,8 @@ public class Car extends BaseEntity {
                     Objects.isNull(power) ||
                     Objects.isNull(transmission) ||
                     Objects.isNull(uploadDate) ||
-                    Objects.isNull(seller);
+                    Objects.isNull(seller) ||
+                    Objects.isNull(options);
         }
     }
 }

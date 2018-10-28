@@ -14,6 +14,7 @@
         <!-- list of classes we want to manage with JPA -->
         <class>edu.home.car.dealer.model.Car</class>
         <class>edu.home.car.dealer.model.Person</class>
+        <class>edu.home.car.dealer.model.Options</class>
 
         <!-- configs of JPA, like driver class, server URL and credentials -->
         <properties>
@@ -38,6 +39,7 @@
         <!-- list of classes we want to manage with JPA -->
         <class>edu.home.car.dealer.model.Car</class>
         <class>edu.home.car.dealer.model.Person</class>
+        <class>edu.home.car.dealer.model.Options</class>
 
         <!-- only custom configs of jpa -->
         <properties>
