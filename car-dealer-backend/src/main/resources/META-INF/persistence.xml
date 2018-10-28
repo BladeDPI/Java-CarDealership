@@ -12,7 +12,8 @@
     <persistence-unit name="carDealPuLocal" transaction-type="RESOURCE_LOCAL">
 
         <!-- list of classes we want to manage with JPA -->
-        <class>edu.home.car.dealer.model.CarDeal</class>
+        <class>edu.home.car.dealer.model.Car</class>
+        <class>edu.home.car.dealer.model.Person</class>
 
         <!-- configs of JPA, like driver class, server URL and credentials -->
         <properties>
@@ -35,7 +36,8 @@
         <jta-data-source>java:jboss/datasources/carDealerDS</jta-data-source>
 
         <!-- list of classes we want to manage with JPA -->
-        <class>edu.home.car.dealer.model.CarDeal</class>
+        <class>edu.home.car.dealer.model.Car</class>
+        <class>edu.home.car.dealer.model.Person</class>
 
         <!-- only custom configs of jpa -->
         <properties>

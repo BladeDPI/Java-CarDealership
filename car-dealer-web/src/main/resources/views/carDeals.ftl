@@ -91,7 +91,7 @@
         <#list carDeals as carDeal>
         <div class="car-deals">
             <h2 class="car-deals-title">${carDeal.title}</h2>
-            <p class="car-deals-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.writer}</a></p>
+            <p class="car-deals-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.seller.profileName}</a></p>
 
 
             <table id="t01">

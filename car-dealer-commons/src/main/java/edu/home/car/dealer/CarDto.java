@@ -3,7 +3,7 @@ package edu.home.car.dealer;
 import java.io.Serializable;
 import java.util.Date;
 
-public class CarDealDto implements Serializable {
+public class CarDto implements Serializable {
 
     private Long id;
     private String title;
@@ -20,9 +20,9 @@ public class CarDealDto implements Serializable {
     private int power;
     private String transmission;
     private Date uploadDate;
-    private String writer;
+    private PersonDTO seller;
 
-    public CarDealDto() {
+    public CarDto() {
     }
 
     public Long getId() {
@@ -145,12 +145,11 @@ public class CarDealDto implements Serializable {
         this.uploadDate = uploadDate;
     }
 
-    public String getWriter() {
-        return writer;
+    public PersonDTO getSeller() {
+        return seller;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setSeller(PersonDTO person) {
+        this.seller = person;
     }
-
 }

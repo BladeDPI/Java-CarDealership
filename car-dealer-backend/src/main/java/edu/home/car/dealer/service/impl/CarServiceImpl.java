@@ -1,9 +1,9 @@
 package edu.home.car.dealer.service.impl;
 
-import edu.home.car.dealer.dao.CarDealerDao;
+import edu.home.car.dealer.dao.CarDao;
 import edu.home.car.dealer.dao.RepositoryException;
-import edu.home.car.dealer.model.CarDeal;
-import edu.home.car.dealer.service.CarDealerService;
+import edu.home.car.dealer.model.Car;
+import edu.home.car.dealer.service.CarService;
 import edu.home.car.dealer.service.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +17,15 @@ import java.util.Collection;
 
 @Stateless
 @DeclareRoles({"test", "carDealer"})
-public class CarDealerServiceImpl implements CarDealerService {
-    private final Logger LOG = LoggerFactory.getLogger(CarDealerServiceImpl.class);
+public class CarServiceImpl implements CarService {
+    private final Logger LOG = LoggerFactory.getLogger(CarServiceImpl.class);
 
     @Inject
-    private CarDealerDao carDealerDao;
+    private CarDao carDealerDao;
 
     @Override
     @PermitAll
-    public Collection<CarDeal> findAllCarDeals() throws ServiceException {
+    public Collection<Car> findAllCarDeals() throws ServiceException {
         try {
             return carDealerDao.findAll();
         }
@@ -37,7 +37,7 @@ public class CarDealerServiceImpl implements CarDealerService {
 
     @Override
     @RolesAllowed("test")
-    public CarDeal findCarDealById(Long id) throws ServiceException {
+    public Car findCarDealById(Long id) throws ServiceException {
         try {
             return carDealerDao.findById(id);
         }
@@ -49,18 +49,18 @@ public class CarDealerServiceImpl implements CarDealerService {
 
     @Override
     @RolesAllowed("test")
-    public void createCarDeal(CarDeal carDeal) throws ServiceException {
+    public void createCarDeal(Car carDeal) throws ServiceException {
         try {
             carDealerDao.create(carDeal);
         }
         catch (RepositoryException e) {
-            LOG.error("createCarDeal failed", e);
-            throw new ServiceException("createCarDeal failed", e);
+            LOG.error("createCar failed", e);
+            throw new ServiceException("createCar failed", e);
         }
     }
 
     @Override
-    public Collection<CarDeal> findCarDealByTitle(String title) throws ServiceException {
+    public Collection<Car> findCarDealByTitle(String title) throws ServiceException {
         try {
             return carDealerDao.findByTitle(title);
         }

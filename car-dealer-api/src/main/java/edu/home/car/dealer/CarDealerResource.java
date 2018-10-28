@@ -1,7 +1,7 @@
 package edu.home.car.dealer;
 
-import edu.home.car.dealer.model.CarDeal;
-import edu.home.car.dealer.service.CarDealerService;
+import edu.home.car.dealer.model.Car;
+import edu.home.car.dealer.service.CarService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,12 +18,12 @@ import java.util.Collection;
 public class CarDealerResource {
 
     @Inject
-    private CarDealerService carDealerService;
+    private CarService carDealerService;
 
     @GET
     @Path("/")
     public Response findAll() {
-        final Collection<CarDeal> allCarDeals = carDealerService.findAllCarDeals();
+        final Collection<Car> allCarDeals = carDealerService.findAllCarDeals();
         final ResponseBuilder builder = Response.ok(allCarDeals);
         return builder.build();
     }
@@ -31,7 +31,7 @@ public class CarDealerResource {
     @GET
     @Path("/{carDealId}")
     public Response findCarDealById(@PathParam("carDealId") Long id) {
-        final CarDeal carDealById = carDealerService.findCarDealById(id);
+        final Car carDealById = carDealerService.findCarDealById(id);
         final ResponseBuilder builder = Response.ok(carDealById);
         return builder.build();
     }

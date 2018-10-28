@@ -1,18 +1,20 @@
 package edu.home.car.dealer.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "carDeal")
+@Table(name = "Car")
 @NamedQueries({
-        @NamedQuery(name = CarDeal.FIND_BY_TITLE, query = "from CarDeal bp where bp.title like :title")
+        @NamedQuery(name = Car.FIND_BY_TITLE, query = "from Car bp where bp.title like :title")
 })
 
-public class CarDeal extends BaseEntity {
+public class Car extends BaseEntity {
 
-    public static final String FIND_BY_TITLE = "CarDeal.findByTitle";
+    public static final String FIND_BY_TITLE = "Car.findByTitle";
 
     @Column
     private String title;
@@ -42,13 +44,15 @@ public class CarDeal extends BaseEntity {
     private String transmission;
     @Column
     private Date uploadDate;
-    @Column
-    private String writer;
 
-    public CarDeal(){
+    @JsonManagedReference
+    @ManyToOne (cascade=CascadeType.ALL)
+    private Person seller;
+
+    public Car() {
     }
 
-    private CarDeal(String title, int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Date uploadDate, String writer) {
+    private Car(String title, int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Date uploadDate, Person seller) {
         this.title = title;
         this.price = price;
         this.make = make;
@@ -63,7 +67,7 @@ public class CarDeal extends BaseEntity {
         this.power = power;
         this.transmission = transmission;
         this.uploadDate = uploadDate;
-        this.writer = writer;
+        this.seller = seller;
     }
 
     public String getTitle() {
@@ -178,17 +182,17 @@ public class CarDeal extends BaseEntity {
         this.uploadDate = uploadDate;
     }
 
-    public String getWriter() {
-        return writer;
+    public Person getSeller() {
+        return seller;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setSeller(Person seller) {
+        this.seller = seller;
     }
 
     @Override
     public String toString() {
-        return "CarDeal{" +
+        return "Car{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", price='" + price + '\'' +
@@ -203,11 +207,10 @@ public class CarDeal extends BaseEntity {
                 ", power='" + power + '\'' +
                 ", transmission='" + transmission + '\'' +
                 ", uploadDate=" + uploadDate +
-                ", writer='" + writer + '\'' +
                 '}';
     }
 
-    public static class CarDealBuilder {
+    public static class CarBuilder {
         private String title;
         private int price;
         private String make;
@@ -222,96 +225,92 @@ public class CarDeal extends BaseEntity {
         private int power;
         private String transmission;
         private Date uploadDate;
-        private String writer;
+        private Person seller;
 
-        public CarDealBuilder() {
-
-        }
-
-        public CarDealBuilder price(int price) {
+        public CarBuilder price(int price) {
             this.price = price;
             return this;
         }
 
-        public CarDealBuilder make(String make) {
+        public CarBuilder make(String make) {
             this.make = make;
             return this;
         }
 
-        public CarDealBuilder model(String model) {
+        public CarBuilder model(String model) {
             this.model = model;
             return this;
         }
 
-        public CarDealBuilder trim(String trim) {
+        public CarBuilder trim(String trim) {
             this.trim = trim;
             return this;
         }
 
-        public CarDealBuilder km(int km) {
+        public CarBuilder km(int km) {
             this.km = km;
             return this;
         }
 
-        public CarDealBuilder year(int year) {
+        public CarBuilder year(int year) {
             this.year = year;
             return this;
         }
 
-        public CarDealBuilder fuelType(String fuelType) {
+        public CarBuilder fuelType(String fuelType) {
             this.fuelType = fuelType;
             return this;
         }
 
-        public CarDealBuilder bodyType(String bodyType) {
+        public CarBuilder bodyType(String bodyType) {
             this.bodyType = bodyType;
             return this;
         }
 
-        public CarDealBuilder color(String color) {
+        public CarBuilder color(String color) {
             this.color = color;
             return this;
         }
 
-        public CarDealBuilder city(String city) {
+        public CarBuilder city(String city) {
             this.city = city;
             return this;
         }
 
-        public CarDealBuilder power(int power) {
+        public CarBuilder power(int power) {
             this.power = power;
             return this;
         }
 
-        public CarDealBuilder transmission(String transmission) {
+        public CarBuilder transmission(String transmission) {
             this.transmission = transmission;
             return this;
         }
 
-        public CarDealBuilder uploadDate(Date uploadDate) {
+        public CarBuilder uploadDate(Date uploadDate) {
             this.uploadDate = uploadDate;
             return this;
         }
 
-        public CarDealBuilder writer(String writer) {
-            this.writer = writer;
+        public CarBuilder seller(Person seller) {
+            this.seller = seller;
             return this;
         }
 
-        public CarDeal createCarDeal() {
+        public Car createCar() {
 
             title = year + " " + make + " " + model + " " + trim;
 
-            if(isNotValie()){
+            if (isNotValid()) {
                 throw new IllegalStateException("Every filed must be filled.");
             }
 
-            return new CarDeal(
+            return new Car(
                     title, price, make, model, trim, km, year, fuelType, bodyType,
-                    color, city, power, transmission, uploadDate, writer);
+                    color, city, power, transmission, uploadDate, seller);
         }
 
-        private boolean isNotValie(){
+        private boolean isNotValid() {
             return Objects.isNull(title) ||
                     Objects.isNull(price) ||
                     Objects.isNull(make) ||
@@ -326,7 +325,7 @@ public class CarDeal extends BaseEntity {
                     Objects.isNull(power) ||
                     Objects.isNull(transmission) ||
                     Objects.isNull(uploadDate) ||
-                    Objects.isNull(writer);
+                    Objects.isNull(seller);
         }
     }
 }

@@ -6,7 +6,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import edu.home.car.dealer.CarDealDto;
+import edu.home.car.dealer.CarDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -58,13 +58,13 @@ public class CarDealerServlet extends HttpServlet {
         final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
 
         final ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        final Collection<CarDealDto> carDeals = response.getEntity(new GenericType<List<CarDealDto>>() {
+        final Collection<CarDto> carDeals = response.getEntity(new GenericType<List<CarDto>>() {
         });
 
         showCars(resp, carDeals);
     }
 
-    private void showCars(HttpServletResponse resp, Collection<CarDealDto> carDeals) throws IOException {
+    private void showCars(HttpServletResponse resp, Collection<CarDto> carDeals) throws IOException {
         final Map<String, Object> model = new HashMap<>();
         model.put("carDeals", carDeals);
         try {
@@ -92,7 +92,7 @@ public class CarDealerServlet extends HttpServlet {
         final NewCookie cookie = SessionManager.getCookie(sessionId);
 
         final ClientResponse response = service.path(id).cookie(cookie).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        final CarDealDto carDeals = response.getEntity(CarDealDto.class);
+        final CarDto carDeals = response.getEntity(CarDto.class);
 
         showCars(resp, Collections.singleton(carDeals));
     }
