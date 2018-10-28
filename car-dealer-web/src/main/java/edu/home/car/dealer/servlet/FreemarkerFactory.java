@@ -7,7 +7,7 @@ import javax.enterprise.inject.Produces;
 
 @ApplicationScoped
 public class FreemarkerFactory {
-    public static final String VIEWS_PACKAGE = "views";
+    private static final String VIEWS_PACKAGE = "views";
 
     private static Configuration freemarkerConfiguration;
 

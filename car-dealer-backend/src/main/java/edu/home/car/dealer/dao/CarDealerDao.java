@@ -6,6 +6,5 @@ import java.util.Collection;
 
 public interface CarDealerDao extends  Dao<CarDeal> {
 
-    // CRUD methods specific to this entity
     Collection<CarDeal> findByTitle(String title);
 }

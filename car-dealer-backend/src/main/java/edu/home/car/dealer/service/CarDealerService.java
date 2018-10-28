@@ -6,11 +6,11 @@ import java.util.Collection;
 
 public interface CarDealerService {
 
-    Collection<CarDeal> findAllCarDeals() throws ServiceException;
+    Collection<CarDeal> findAllCarDeals();
 
-    CarDeal findCarDealById(Long id) throws ServiceException;
+    CarDeal findCarDealById(Long id);
 
-    void createCarDeal(CarDeal carDeal) throws ServiceException;
+    void createCarDeal(CarDeal carDeal);
 
-    Collection<CarDeal> findCarDealByTitle(String title) throws ServiceException;
+    Collection<CarDeal> findCarDealByTitle(String title);
 }

@@ -33,7 +33,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
+    private final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 
     private Template freemarkerTemplate;
 

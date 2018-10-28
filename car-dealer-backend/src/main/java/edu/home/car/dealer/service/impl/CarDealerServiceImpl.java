@@ -18,7 +18,7 @@ import java.util.Collection;
 @Stateless
 @DeclareRoles({"test", "carDealer"})
 public class CarDealerServiceImpl implements CarDealerService {
-    private static final Logger LOG = LoggerFactory.getLogger(CarDealerServiceImpl.class);
+    private final Logger LOG = LoggerFactory.getLogger(CarDealerServiceImpl.class);
 
     @Inject
     private CarDealerDao carDealerDao;

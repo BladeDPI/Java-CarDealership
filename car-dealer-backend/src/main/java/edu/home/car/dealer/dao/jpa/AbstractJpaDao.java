@@ -1,13 +1,3 @@
-/*
- * *************************************************************************
- * Copyright (C) Wolters Kluwer Financial Services. All rights reserved.
- *
- * This computer program is protected by copyright law and international
- * treaties. Unauthorized reproduction or distribution of this program,
- * or any portion of it, may result in severe civil and criminal penalties,
- * and will be prosecuted to the maximum extent possible under the law.
- * *************************************************************************
- */
 package edu.home.car.dealer.dao.jpa;
 
 import edu.home.car.dealer.dao.RepositoryException;
@@ -24,13 +14,13 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public abstract class AbstractJpaDao<T extends BaseEntity> implements Dao<T> {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractJpaDao.class);
-    private Class<T> clazz;
+    private final Logger LOG = LoggerFactory.getLogger(AbstractJpaDao.class);
+    private final Class<T> clazz;
 
     @PersistenceContext(unitName = "carDealPu")
     protected EntityManager entityManager;
 
-    public AbstractJpaDao(final Class<T> clazz) {
+    AbstractJpaDao(final Class<T> clazz) {
         this.clazz = clazz;
     }
 
@@ -47,8 +37,8 @@ public abstract class AbstractJpaDao<T extends BaseEntity> implements Dao<T> {
     @Override
     public List<T> findAll() throws RepositoryException {
         try {
-            TypedQuery<T> query = entityManager.createQuery("from " + clazz.getSimpleName(), clazz);
-            List<T> ret = query.getResultList();
+            final TypedQuery<T> query = entityManager.createQuery("from " + clazz.getSimpleName(), clazz);
+            final List<T> ret = query.getResultList();
             LOG.info("Found {} instances of {}", ret.size(), clazz.getSimpleName());
             return ret;
         } catch (IllegalStateException | IllegalArgumentException | PersistenceException e) {
