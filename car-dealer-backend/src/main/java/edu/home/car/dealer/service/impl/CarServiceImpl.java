@@ -25,9 +25,9 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @PermitAll
-    public Collection<Car> findAllCarDeals() throws ServiceException {
+    public Collection<Car> findAllAvailable() throws ServiceException {
         try {
-            return carDealerDao.findAll();
+            return carDealerDao.findAllAvailable();
         }
         catch (RepositoryException e) {
             LOG.error("findAllCarDeals failed", e);

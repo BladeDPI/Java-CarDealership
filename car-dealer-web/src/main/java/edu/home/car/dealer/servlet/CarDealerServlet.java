@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.util.*;
@@ -97,14 +98,20 @@ public class CarDealerServlet extends HttpServlet {
         final NewCookie cookie = SessionManager.getCookie(sessionId);
 
         final ClientResponse response = service.path(id).cookie(cookie).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        final CarDto carDeals = response.getEntity(CarDto.class);
 
-        final List<NewCookie> newCookies = response.getCookies();
-        if (newCookies != null && newCookies.size() > 0) {
-            SessionManager.putCookie(sessionId, newCookies.get(0));
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            final CarDto carDeals = response.getEntity(CarDto.class);
+
+            final List<NewCookie> newCookies = response.getCookies();
+            if (newCookies != null && newCookies.size() > 0) {
+                SessionManager.putCookie(sessionId, newCookies.get(0));
+            }
+
+            showCars(resp, Collections.singleton(carDeals));
         }
-
-        showCars(resp, Collections.singleton(carDeals));
+        else{
+            doGet(req, resp);
+        }
     }
 }
 

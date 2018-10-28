@@ -20,6 +20,7 @@ public class CarDto implements Serializable {
     private int power;
     private String transmission;
     private Date uploadDate;
+    private boolean sold;
     private PersonDto seller;
     private OptionsDto options;
 
@@ -144,6 +145,14 @@ public class CarDto implements Serializable {
 
     public void setUploadDate(Date uploadDate) {
         this.uploadDate = uploadDate;
+    }
+
+    public boolean isSold() {
+        return sold;
+    }
+
+    public void setSold(boolean sold) {
+        this.sold = sold;
     }
 
     public PersonDto getSeller() {

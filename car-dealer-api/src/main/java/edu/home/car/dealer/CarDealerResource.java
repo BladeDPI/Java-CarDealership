@@ -3,8 +3,10 @@ package edu.home.car.dealer;
 import edu.home.car.dealer.model.Car;
 import edu.home.car.dealer.service.CarService;
 
+import javax.ejb.EJBAccessException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,8 +24,8 @@ public class CarDealerResource {
 
     @GET
     @Path("/")
-    public Response findAll() {
-        final Collection<Car> allCarDeals = carDealerService.findAllCarDeals();
+    public Response findAllAvailable() {
+        final Collection<Car> allCarDeals = carDealerService.findAllAvailable();
         final ResponseBuilder builder = Response.ok(allCarDeals);
         return builder.build();
     }
@@ -31,8 +33,13 @@ public class CarDealerResource {
     @GET
     @Path("/{carDealId}")
     public Response findCarDealById(@PathParam("carDealId") Long id) {
-        final Car carDealById = carDealerService.findCarDealById(id);
-        final ResponseBuilder builder = Response.ok(carDealById);
-        return builder.build();
+        try {
+            final Car carDealById = carDealerService.findCarDealById(id);
+            final ResponseBuilder builder = Response.ok(carDealById);
+            return builder.build();
+        }
+         catch(EJBAccessException e){
+                return Response.status(Response.Status.FORBIDDEN).entity("Please login").build();
+            }
+        }
     }
-}

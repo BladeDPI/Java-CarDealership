@@ -9,12 +9,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "Car")
 @NamedQueries({
-        @NamedQuery(name = Car.FIND_BY_TITLE, query = "from Car bp where bp.title like :title")
+        @NamedQuery(name = Car.FIND_BY_TITLE, query = "from Car bp where bp.title like :title"),
+        @NamedQuery(name = Car.FIND_ALL_AVAILABLE, query = "from Car bp where bp.sold = false")
 })
 
 public class Car extends BaseEntity {
 
     public static final String FIND_BY_TITLE = "Car.findByTitle";
+    public static final String FIND_ALL_AVAILABLE = "Car.findAllAvailable";
 
     @Column
     private String title;
@@ -44,6 +46,8 @@ public class Car extends BaseEntity {
     private String transmission;
     @Column
     private Date uploadDate;
+    @Column
+    private boolean sold;
 
     @JsonManagedReference
     @ManyToOne (cascade=CascadeType.ALL)
@@ -187,6 +191,14 @@ public class Car extends BaseEntity {
         this.uploadDate = uploadDate;
     }
 
+    public boolean isSold() {
+        return sold;
+    }
+
+    public void setSold(boolean sold) {
+        this.sold = sold;
+    }
+
     public Person getSeller() {
         return seller;
     }
@@ -220,6 +232,7 @@ public class Car extends BaseEntity {
                 ", power='" + power + '\'' +
                 ", transmission='" + transmission + '\'' +
                 ", uploadDate=" + uploadDate +
+                ", sold=" + sold +
                 '}';
     }
 

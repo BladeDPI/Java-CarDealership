@@ -16,6 +16,13 @@ public class CarJpaDao extends AbstractJpaDao<Car> implements CarDao {
     }
 
     @Override
+    public Collection<Car> findAllAvailable(){
+        final TypedQuery<Car> query = entityManager.createNamedQuery(Car.FIND_ALL_AVAILABLE, Car.class);
+        return query.getResultList();
+    }
+
+
+    @Override
     public Collection<Car> findByTitle(String title) throws RepositoryException {
         final TypedQuery<Car> query = entityManager.createNamedQuery(Car.FIND_BY_TITLE, Car.class);
         query.setParameter("title", title);

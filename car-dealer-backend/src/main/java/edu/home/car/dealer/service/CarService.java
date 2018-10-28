@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface CarService {
 
-    Collection<Car> findAllCarDeals();
+    Collection<Car> findAllAvailable();
 
     Car findCarDealById(Long id);
 

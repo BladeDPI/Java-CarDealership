@@ -32,25 +32,37 @@ public class DataInitialization {
     @PostConstruct
     private void init() {
 
-        final Person sellerOne = new Person("DokaIstvan", "Doka", "Istvan", "5678", "Kolozsvar");
-        final Options optionsOne = createOptions(true, false, true, true, true, false, true, true, false, true, true);
-        final Car carDealOne = createCarDeals(5_400, "Mercedes Benz", "Ml-Class", "320 CDI", 240_000, 2006, "Diesel", "Suv", "Silver", "Arad", 165, "Automatic", sellerOne, optionsOne);
-        sellerOne.getCars().add(carDealOne);
-        optionsOne.setCar(carDealOne);
+        final Person isti = new Person("DokaIstvan", "Doka", "Istvan", "5678", "Kolozsvar");
+        final Options merciOption = createOptions(true, false, true, true, true, false, true, true, false, true, true);
+        final Car merci = createCarDeals(5_400, "Mercedes Benz", "Ml-Class", "320 CDI", 240_000, 2006, "Diesel", "Suv", "Silver", "Arad", 165, "Automatic", isti, merciOption);
+        isti.getCars().add(merci);
+        merciOption.setCar(merci);
 
-        carDao.create(carDealOne);
-        optionsDao.create(optionsOne);
-        personDao.create(sellerOne);
+        carDao.create(merci);
+        optionsDao.create(merciOption);
+        personDao.create(isti);
 
-        final Person sellerTwo = new Person("PeterParker", "Peter", "Parker", "7821", "New York");
-        final Options optionsTwo= createOptions(false, true, false, true, false, false, true, true, true, true, true);
-        final Car carDealTwo = createCarDeals(19_300, "Audi", "A6", "2.0 TDI", 86_500, 2013, "Diesel", "Sedan", "Gold", "Cluj Napoca", 131, "Automatic", sellerTwo, optionsTwo);
-        sellerTwo.getCars().add(carDealTwo);
-        optionsTwo.setCar(carDealTwo);
+        final Person parker = new Person("PeterParker", "Peter", "Parker", "7821", "New York");
+        final Options audiOption= createOptions(false, true, false, true, false, false, true, true, true, true, true);
+        final Car audi = createCarDeals(19_300, "Audi", "A6", "2.0 TDI", 86_500, 2013, "Diesel", "Sedan", "Gold", "Cluj Napoca", 131, "Automatic", parker, audiOption);
+        parker.getCars().add(audi);
+        audiOption.setCar(audi);
 
-        carDao.create(carDealTwo);
-        optionsDao.create(optionsTwo);
-        personDao.create(sellerTwo);
+        carDao.create(audi);
+        optionsDao.create(audiOption);
+        personDao.create(parker);
+
+
+        final Person wayne = new Person("BruceWayne", "Bruce", "Wayne", "3652", "Gotham");
+        final Options batMobilOption = createOptions(true, true, true, true, true, true, true, true, true, true, true);
+        final Car batMobil = createCarDeals(1_000_000, "Wayne Industry", "BatMobil", "Tank", 100_500, 2018, "Diesel", "Tank", "Black", "Gotham", 1_000, "Automatic", wayne, batMobilOption);
+        wayne.getCars().add(batMobil);
+        batMobilOption.setCar(batMobil);
+        batMobil.setSold(true);
+
+        carDao.create(batMobil);
+        optionsDao.create(batMobilOption);
+        personDao.create(wayne);
     }
 
     private Options createOptions(boolean abs, boolean airbag, boolean alarm, boolean alloyWheels, boolean centralLocking, boolean cruiseControl, boolean electricMirrors, boolean electricWindows, boolean tripComputer, boolean leather, boolean powerSteering) {
