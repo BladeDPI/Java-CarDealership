@@ -83,10 +83,16 @@ public class LoginServlet extends HttpServlet {
         final String userName = req.getParameter("userName");
         final String password = req.getParameter("password");
 
-        if (button.equals("login")) {
-            login(req, resp, userName, password);
-        } else {
-            logout(req, resp, userName, password);
+        switch(button)
+        {
+            case "login":{
+                login(req, resp, userName, password);
+                break;
+            }
+            case "logout":{
+                logout(req, resp, userName, password);
+                break;
+            }
         }
     }
 

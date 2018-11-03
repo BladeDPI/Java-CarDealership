@@ -103,11 +103,33 @@ public class CarDealerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOG.info("Car Dealer POST received");
 
+
+        final String button = req.getParameter("button");
+
+        switch(button)
+        {
+            case "find":{
+                findCar(req, resp);
+                break;
+            }
+            default:{
+                buyCar(req, resp);
+                break;
+            }
+        }
+    }
+
+    private void buyCar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int id = Integer.parseInt(req.getParameter("button"));
+        doGet(req, resp);
+    }
+
+    private void findCar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         final String id = req.getParameter("id");
 
         final ClientConfig config = new DefaultClientConfig();
         final Client client = Client.create(config);
-        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals/find").build());
 
         final HttpSession session = req.getSession(true);
         final String sessionId = session.getId();

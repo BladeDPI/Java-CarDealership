@@ -31,7 +31,7 @@ public class CarDealerResource {
     }
 
     @GET
-    @Path("/{carDealId}")
+    @Path("/find/{carDealId}")
     public Response findCarDealById(@PathParam("carDealId") Long id) {
         try {
             final Car carDealById = carDealerService.findCarDealById(id);

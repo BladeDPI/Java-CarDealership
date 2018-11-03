@@ -188,13 +188,17 @@
                 </tr>
             </table>
         </div>
+
+        <form method="POST">
+            <button type="submit" name="button" value="${carDeal.id}">BUY</button>
+        </form>
         </#list>
 
     <h2>Find by ID</h2>
 
     <form method="POST">
         <label for="title">ID:</label> <input type="text" name="id" required> <br>
-        <button type="submit">FIND</button>
+        <button type="submit" name="button" value="find">FIND</button>
     </form>
 </div>
 </body>
