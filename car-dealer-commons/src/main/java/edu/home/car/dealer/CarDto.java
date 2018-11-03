@@ -21,7 +21,7 @@ public class CarDto implements Serializable {
     private String transmission;
     private Date uploadDate;
     private boolean sold;
-    private PersonDto seller;
+    private PersonDto person;
     private OptionsDto options;
 
     public CarDto() {
@@ -155,12 +155,12 @@ public class CarDto implements Serializable {
         this.sold = sold;
     }
 
-    public PersonDto getSeller() {
-        return seller;
+    public PersonDto getPerson() {
+        return person;
     }
 
-    public void setSeller(PersonDto person) {
-        this.seller = person;
+    public void setPerson(PersonDto person) {
+        this.person = person;
     }
 
     public OptionsDto getOptions() {

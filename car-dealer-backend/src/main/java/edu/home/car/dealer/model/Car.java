@@ -9,13 +9,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "Car")
 @NamedQueries({
-        @NamedQuery(name = Car.FIND_BY_TITLE, query = "from Car bp where bp.title like :title"),
-        @NamedQuery(name = Car.FIND_ALL_AVAILABLE, query = "from Car bp where bp.sold = false")
+        @NamedQuery(name = Car.FIND_ALL_AVAILABLE, query = "from Car c where c.sold = false")
 })
-
 public class Car extends BaseEntity {
 
-    public static final String FIND_BY_TITLE = "Car.findByTitle";
     public static final String FIND_ALL_AVAILABLE = "Car.findAllAvailable";
 
     @Column
@@ -51,7 +48,7 @@ public class Car extends BaseEntity {
 
     @JsonManagedReference
     @ManyToOne (cascade=CascadeType.ALL)
-    private Person seller;
+    private Person person;
 
     @JsonManagedReference
     @OneToOne (cascade=CascadeType.ALL)
@@ -60,7 +57,7 @@ public class Car extends BaseEntity {
     public Car() {
     }
 
-    private Car(String title, int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Date uploadDate, Person seller, Options options) {
+    private Car(String title, int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Date uploadDate, Person person, Options options) {
         this.title = title;
         this.price = price;
         this.make = make;
@@ -75,7 +72,7 @@ public class Car extends BaseEntity {
         this.power = power;
         this.transmission = transmission;
         this.uploadDate = uploadDate;
-        this.seller = seller;
+        this.person = person;
         this.options = options;
     }
 
@@ -199,12 +196,12 @@ public class Car extends BaseEntity {
         this.sold = sold;
     }
 
-    public Person getSeller() {
-        return seller;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setSeller(Person seller) {
-        this.seller = seller;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Options getOptions() {
@@ -251,7 +248,7 @@ public class Car extends BaseEntity {
         private int power;
         private String transmission;
         private Date uploadDate;
-        private Person seller;
+        private Person person;
         private Options options;
 
         public CarBuilder price(int price) {
@@ -319,8 +316,8 @@ public class Car extends BaseEntity {
             return this;
         }
 
-        public CarBuilder seller(Person seller) {
-            this.seller = seller;
+        public CarBuilder person(Person person) {
+            this.person = person;
             return this;
         }
 
@@ -339,7 +336,7 @@ public class Car extends BaseEntity {
 
             return new Car(
                     title, price, make, model, trim, km, year, fuelType, bodyType,
-                    color, city, power, transmission, uploadDate, seller, options);
+                    color, city, power, transmission, uploadDate, person, options);
         }
 
         private boolean isNotValid() {
@@ -357,7 +354,7 @@ public class Car extends BaseEntity {
                     Objects.isNull(power) ||
                     Objects.isNull(transmission) ||
                     Objects.isNull(uploadDate) ||
-                    Objects.isNull(seller) ||
+                    Objects.isNull(person) ||
                     Objects.isNull(options);
         }
     }

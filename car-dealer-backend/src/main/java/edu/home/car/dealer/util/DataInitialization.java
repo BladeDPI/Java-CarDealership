@@ -73,12 +73,12 @@ public class DataInitialization {
         return optionBuilder.createOption();
     }
 
-    private Car createCarDeals(int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Person seller, Options options) {
+    private Car createCarDeals(int price, String make, String model, String trim, int km, int year, String fuelType, String bodyType, String color, String city, int power, String transmission, Person person, Options options) {
         final Car.CarBuilder carDealBuilder=  new Car.CarBuilder();
         carDealBuilder.price(price).make(make).model(model).trim(trim).km(km)
                 .year(year).fuelType(fuelType).bodyType(bodyType).color(color).city(city)
                 .power(power).transmission(transmission).uploadDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
-                .seller(seller).options(options);
+                .person(person).options(options);
         return carDealBuilder.createCar();
     }
 }

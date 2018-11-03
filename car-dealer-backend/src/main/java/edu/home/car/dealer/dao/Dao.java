@@ -8,6 +8,8 @@ public interface Dao<T extends BaseEntity> {
 
     void create(T obj) throws RepositoryException;
 
+    void save(T obj) throws RepositoryException;
+
     Collection<T> findAll() throws RepositoryException;
 
     T findById(Long id) throws RepositoryException;

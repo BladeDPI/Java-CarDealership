@@ -12,5 +12,5 @@ public interface CarService {
 
     void createCarDeal(Car carDeal);
 
-    Collection<Car> findCarDealByTitle(String title);
+    Car sellCar(Car car, String profileName);
 }

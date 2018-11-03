@@ -84,6 +84,16 @@
             background-color: transparent;
             text-decoration: underline;
         }
+
+        button {
+            background-color: #af7c35;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -99,7 +109,7 @@
         <#list carDeals as carDeal>
         <div class="car-deals">
             <h2 class="car-deals-title">${carDeal.title}</h2>
-            <p class="car-deals-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.seller.profileName}</a>
+            <p class="car-deals-meta">${carDeal.uploadDate?datetime} by <a href="#">${carDeal.person.profileName}</a>
             </p>
 
             <h3 class="car-basic-information" style="text-align:center;">Basic Information</h3>

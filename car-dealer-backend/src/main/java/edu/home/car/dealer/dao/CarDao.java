@@ -7,6 +7,4 @@ import java.util.Collection;
 public interface CarDao extends  Dao<Car> {
 
     Collection<Car> findAllAvailable();
-
-    Collection<Car> findByTitle(String title);
 }

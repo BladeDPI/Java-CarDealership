@@ -60,4 +60,17 @@ public abstract class AbstractJpaDao<T extends BaseEntity> implements Dao<T> {
         }
     }
 
+    @Override
+    @Transactional
+    public void save(T obj) throws RepositoryException {
+        LOG.info("Saving {} {}", clazz.getSimpleName(), obj);
+        try {
+            entityManager.merge(obj);
+            entityManager.flush();
+        } catch (PersistenceException | IllegalArgumentException e) {
+            LOG.error("save failed", e);
+            throw new RepositoryException("save failed", e);
+        }
+    }
+
 }

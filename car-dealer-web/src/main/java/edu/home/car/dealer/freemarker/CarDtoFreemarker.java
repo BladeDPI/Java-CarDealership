@@ -22,7 +22,7 @@ public class CarDtoFreemarker {
     private int power;
     private String transmission;
     private Date uploadDate;
-    private PersonDto seller;
+    private PersonDto person;
     private OptionDtoFreemarker options;
 
     public CarDtoFreemarker(CarDto carDto){
@@ -41,7 +41,7 @@ public class CarDtoFreemarker {
         this.power = carDto.getPower();
         this.transmission = carDto.getTransmission();
         this.uploadDate = carDto.getUploadDate();
-        this.seller = carDto.getSeller();
+        this.person = carDto.getPerson();
         this.options = new OptionDtoFreemarker((carDto.getOptions()));
     }
 
@@ -165,12 +165,12 @@ public class CarDtoFreemarker {
         this.uploadDate = uploadDate;
     }
 
-    public PersonDto getSeller() {
-        return seller;
+    public PersonDto getPerson() {
+        return person;
     }
 
-    public void setSeller(PersonDto seller) {
-        this.seller = seller;
+    public void setPerson(PersonDto person) {
+        this.person = person;
     }
 
     public OptionDtoFreemarker getOptions() {

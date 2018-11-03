@@ -4,7 +4,6 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import edu.home.car.dealer.CarDto;
 import edu.home.car.dealer.freemarker.CarDtoFreemarker;
@@ -20,7 +19,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -37,6 +35,8 @@ public class CarDealerServlet extends HttpServlet {
 
     @Inject
     private Configuration configuration;
+
+    private final Client client = Client.create(new DefaultClientConfig());
 
     @Override
     public void init() throws ServletException {
@@ -69,8 +69,6 @@ public class CarDealerServlet extends HttpServlet {
     }
 
     private Collection<CarDto> getAllCars() {
-        final ClientConfig config = new DefaultClientConfig();
-        final Client client = Client.create(config);
         final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
 
         final ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -106,13 +104,12 @@ public class CarDealerServlet extends HttpServlet {
 
         final String button = req.getParameter("button");
 
-        switch(button)
-        {
-            case "find":{
+        switch (button) {
+            case "find": {
                 findCar(req, resp);
                 break;
             }
-            default:{
+            default: {
                 buyCar(req, resp);
                 break;
             }
@@ -120,41 +117,49 @@ public class CarDealerServlet extends HttpServlet {
     }
 
     private void buyCar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int id = Integer.parseInt(req.getParameter("button"));
-        doGet(req, resp);
+
+        final NewCookie cookie = SessionManager.getCookie(req);
+
+        final String id = req.getParameter("button");
+        final String nickName = getNickName(req);
+
+        if (nickName == null || cookie == null) {
+            final Collection<CarDto> carDeals = getAllCars();
+            showCars(resp, carDeals, "You do not have privilege please login");
+        } else {
+            final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+            final ClientResponse response = service.path(id).path(nickName).cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
+
+            SessionManager.putCookie(req, response);
+
+            final Collection<CarDto> carDeals = getAllCars();
+            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+                final CarDto car = response.getEntity(CarDto.class);
+                showCars(resp, carDeals, nickName + " you bought " + car.getTitle());
+            } else if (response.getStatus() == Response.Status.NOT_ACCEPTABLE.getStatusCode()) {
+                showCars(resp, carDeals, nickName + response.getEntity(String.class));
+            } else {
+                showCars(resp, carDeals, response.getEntity(String.class));
+            }
+        }
     }
 
     private void findCar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+
+        final NewCookie cookie = SessionManager.getCookie(req);
+
         final String id = req.getParameter("id");
-
-        final ClientConfig config = new DefaultClientConfig();
-        final Client client = Client.create(config);
-        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals/find").build());
-
-        final HttpSession session = req.getSession(true);
-        final String sessionId = session.getId();
-        final NewCookie cookie = SessionManager.getCookie(sessionId);
-
         final ClientResponse response = service.path(id).cookie(cookie).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
+        SessionManager.putCookie(req, response);
 
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
             final CarDto carDeals = response.getEntity(CarDto.class);
-
-            final List<NewCookie> newCookies = response.getCookies();
-            if (newCookies != null && newCookies.size() > 0) {
-                SessionManager.putCookie(sessionId, newCookies.get(0));
-            }
-
             showCars(resp, Collections.singleton(carDeals), getNickName(req));
         } else {
             final Collection<CarDto> carDeals = getAllCars();
-
-            String nickName = getNickName(req);
-            if (nickName == null) {
-                nickName = "You do not have privilege please login";
-            }
-
-            showCars(resp, carDeals, nickName);
+            showCars(resp, carDeals, response.getEntity(String.class));
         }
     }
 }

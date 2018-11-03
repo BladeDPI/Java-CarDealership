@@ -58,7 +58,7 @@
 </head>
 <body>
 
-<h2>${login}</h2>
+<a href="http://localhost:8080/car-dealer-web/carDeals"><h2>${login}</h2></a>
 
 <form method="POST">
     <div class="imgcontainer">

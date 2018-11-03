@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -54,10 +53,9 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOG.info("Login GET received");
-
-        showLog(resp, "Please login", "kisjoker", "123qweasd");
+        showLog(resp, "Please login", "DokaIstvan", "isti");
     }
 
     private void showLog(HttpServletResponse resp, String login, String userName, String password) throws IOException {
@@ -76,20 +74,19 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOG.info("Login POST received");
 
         final String button = req.getParameter("button");
         final String userName = req.getParameter("userName");
         final String password = req.getParameter("password");
 
-        switch(button)
-        {
-            case "login":{
+        switch (button) {
+            case "login": {
                 login(req, resp, userName, password);
                 break;
             }
-            case "logout":{
+            case "logout": {
                 logout(req, resp, userName, password);
                 break;
             }
@@ -105,17 +102,13 @@ public class LoginServlet extends HttpServlet {
         loginDto.setUsername(userName);
         loginDto.setPassword(password);
 
-        final HttpSession session = req.getSession(true);
-        final String sessionId = session.getId();
-        final NewCookie cookie = SessionManager.getCookie(sessionId);
+        final NewCookie cookie = SessionManager.getCookie(req);
         final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
 
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            final HttpSession session = req.getSession(true);
             session.setAttribute("nickName", userName);
-            final List<NewCookie> newCookies = response.getCookies();
-            if (newCookies != null && newCookies.size() > 0) {
-                SessionManager.putCookie(sessionId, newCookies.get(0));
-            }
+            SessionManager.putCookie(req, response);
         }
 
         showLog(resp, response.getEntity(String.class), loginDto.getUsername(), loginDto.getPassword());
@@ -126,17 +119,13 @@ public class LoginServlet extends HttpServlet {
         final Client client = Client.create(config);
         WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/logout").build());
 
-        final HttpSession session = req.getSession(true);
-        final String sessionId = session.getId();
-        final NewCookie cookie = SessionManager.getCookie(sessionId);
+        final NewCookie cookie = SessionManager.getCookie(req);
         final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
 
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            final HttpSession session = req.getSession(true);
             session.setAttribute("nickName", null);
-            final List<NewCookie> newCookies = response.getCookies();
-            if (newCookies != null && newCookies.size() > 0) {
-                SessionManager.putCookie(sessionId, newCookies.get(0));
-            }
+            SessionManager.putCookie(req, response);
         }
 
         showLog(resp, response.getEntity(String.class), userName, password);

@@ -9,7 +9,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Person")
+@NamedQueries({
+        @NamedQuery(name = Person.FIND_BY_PROFILE_NAME, query = "from Person p where p.profileName like :profileName")
+})
 public class Person extends BaseEntity {
+
+    public static final String FIND_BY_PROFILE_NAME = "Person.findByProfileName";
 
     @Column
     private String profileName;
@@ -23,7 +28,7 @@ public class Person extends BaseEntity {
     private String city;
 
     @JsonBackReference
-    @OneToMany(mappedBy="seller",cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="person",cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Car> cars = new ArrayList<>();
 
     public Person(){

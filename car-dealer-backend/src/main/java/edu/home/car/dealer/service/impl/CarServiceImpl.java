@@ -3,7 +3,9 @@ package edu.home.car.dealer.service.impl;
 import edu.home.car.dealer.dao.CarDao;
 import edu.home.car.dealer.dao.RepositoryException;
 import edu.home.car.dealer.model.Car;
+import edu.home.car.dealer.model.Person;
 import edu.home.car.dealer.service.CarService;
+import edu.home.car.dealer.service.PersonService;
 import edu.home.car.dealer.service.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +18,15 @@ import javax.inject.Inject;
 import java.util.Collection;
 
 @Stateless
-@DeclareRoles({"test", "carDealer"})
+@DeclareRoles("carDealer")
 public class CarServiceImpl implements CarService {
     private final Logger LOG = LoggerFactory.getLogger(CarServiceImpl.class);
 
     @Inject
     private CarDao carDealerDao;
+
+    @Inject
+    private PersonService personService;
 
     @Override
     @PermitAll
@@ -36,7 +41,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    @RolesAllowed("test")
+    @RolesAllowed("carDealer")
     public Car findCarDealById(Long id) throws ServiceException {
         try {
             return carDealerDao.findById(id);
@@ -48,7 +53,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    @RolesAllowed("test")
+    @RolesAllowed("carDealer")
     public void createCarDeal(Car carDeal) throws ServiceException {
         try {
             carDealerDao.create(carDeal);
@@ -60,13 +65,12 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Collection<Car> findCarDealByTitle(String title) throws ServiceException {
-        try {
-            return carDealerDao.findByTitle(title);
-        }
-        catch (RepositoryException e) {
-            LOG.error("findCarDealByTitle failed", e);
-            throw new ServiceException("findCarDealByTitle failed", e);
-        }
+    @RolesAllowed("carDealer")
+    public Car sellCar(Car car, String profileName) {
+        final Person person = personService.findPersonByProfileName(profileName);
+        car.setPerson(person);
+        car.setSold(true);
+        carDealerDao.save(car);
+        return car;
     }
 }
