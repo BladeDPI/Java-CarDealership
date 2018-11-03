@@ -94,7 +94,7 @@
         <div class="navbar-brand">Car Deals</a></div>
     </nav>
 
-    <a href="http://localhost:8080/car-dealer-web/login"><h2>Login</h2></a>
+    <a href="http://localhost:8080/car-dealer-web/login"><h2>${nickName}</h2></a>
 
         <#list carDeals as carDeal>
         <div class="car-deals">

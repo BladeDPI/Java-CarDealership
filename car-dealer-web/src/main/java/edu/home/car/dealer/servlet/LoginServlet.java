@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import com.sun.jersey.api.client.Client;
@@ -60,7 +61,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void showLog(HttpServletResponse resp, String login, String userName, String password) throws IOException {
-        final  Map<String, String> model = new HashMap<>();
+        final Map<String, String> model = new HashMap<>();
         model.put("login", login);
         model.put("userName", userName);
         model.put("password", password);
@@ -82,17 +83,14 @@ public class LoginServlet extends HttpServlet {
         final String userName = req.getParameter("userName");
         final String password = req.getParameter("password");
 
-        final HttpSession session = req.getSession(true);
-        final String sessionId = session.getId();
-
         if (button.equals("login")) {
-            login(resp, sessionId, userName, password);
+            login(req, resp, userName, password);
         } else {
-            logout(resp, sessionId, userName, password);
+            logout(req, resp, userName, password);
         }
     }
 
-    private void login(HttpServletResponse resp, String sessionId, String userName, String password) throws IOException {
+    private void login(HttpServletRequest req, HttpServletResponse resp, String userName, String password) throws IOException {
         final ClientConfig config = new DefaultClientConfig();
         final Client client = Client.create(config);
         final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/login").build());
@@ -101,28 +99,38 @@ public class LoginServlet extends HttpServlet {
         loginDto.setUsername(userName);
         loginDto.setPassword(password);
 
+        final HttpSession session = req.getSession(true);
+        final String sessionId = session.getId();
         final NewCookie cookie = SessionManager.getCookie(sessionId);
         final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
 
-        final List<NewCookie> newCookies = response.getCookies();
-        if (newCookies != null && newCookies.size() > 0 ) {
-            SessionManager.putCookie(sessionId, newCookies.get(0));
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            session.setAttribute("nickName", userName);
+            final List<NewCookie> newCookies = response.getCookies();
+            if (newCookies != null && newCookies.size() > 0) {
+                SessionManager.putCookie(sessionId, newCookies.get(0));
+            }
         }
 
         showLog(resp, response.getEntity(String.class), loginDto.getUsername(), loginDto.getPassword());
     }
 
-    private void logout(HttpServletResponse resp, String sessionId, String userName, String password) throws IOException {
+    private void logout(HttpServletRequest req, HttpServletResponse resp, String userName, String password) throws IOException {
         final ClientConfig config = new DefaultClientConfig();
         final Client client = Client.create(config);
         WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/logout").build());
 
+        final HttpSession session = req.getSession(true);
+        final String sessionId = session.getId();
         final NewCookie cookie = SessionManager.getCookie(sessionId);
         final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
 
-        final List<NewCookie> newCookies = response.getCookies();
-        if (newCookies != null && newCookies.size() > 0) {
-            SessionManager.putCookie(sessionId, newCookies.get(0));
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            session.setAttribute("nickName", null);
+            final List<NewCookie> newCookies = response.getCookies();
+            if (newCookies != null && newCookies.size() > 0) {
+                SessionManager.putCookie(sessionId, newCookies.get(0));
+            }
         }
 
         showLog(resp, response.getEntity(String.class), userName, password);
