@@ -64,7 +64,6 @@
 
 <form method="POST">
     <div class="container">
-        <h1>Sign Up</h1>
         <p>Please fill in this form to create an account.</p>
         <hr>
 
@@ -85,6 +84,9 @@
 
         <label for="phoneNumber"><b>Phone Number</b></label>
         <input type="text" placeholder="Enter Phone Number" name="phoneNumber" value=${phoneNumber} required>
+
+        <label for="city"><b>City</b></label>
+        <input type="text" placeholder="Enter your home town" name="city" value=${city} required>
 
         <label for="psw"><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="psw" required>

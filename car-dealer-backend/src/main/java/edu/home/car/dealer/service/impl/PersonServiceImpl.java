@@ -13,6 +13,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.Collection;
 
 @Stateless
@@ -24,7 +25,7 @@ public class PersonServiceImpl implements PersonService {
     private PersonDao personDao;
 
     @Override
-    @PermitAll
+    @RolesAllowed("carDealer")
     public Collection<Person> findAllPersons() throws ServiceException {
         try {
             return personDao.findAll();
@@ -35,7 +36,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @RolesAllowed("carDealer")
+    @PermitAll
     public Person findPersonByProfileName(String profileName) throws ServiceException {
         try {
             return personDao.findPersonByProfileName(profileName);
@@ -46,13 +47,27 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @RolesAllowed("carDealer")
+    @PermitAll
     public void createPerson(Person person) throws ServiceException {
         try {
             personDao.create(person);
+
+            addToWebContainer(person);
         } catch (RepositoryException e) {
             LOG.error("create Person failed", e);
             throw new ServiceException("create Person failed", e);
+        } catch (IOException e) {
+            LOG.error("Command to add Person failed", e);
+            throw new ServiceException("Command to add Person failed", e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void addToWebContainer(Person person) throws IOException, InterruptedException {
+        final ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c",  "start", "/b", "add-user.bat", "-a", person.getProfileName(), person.getPassword(), "-g", "carDealer");
+        processBuilder.redirectErrorStream(true);
+        final Process p = processBuilder.start();
+        p.waitFor();
     }
 }

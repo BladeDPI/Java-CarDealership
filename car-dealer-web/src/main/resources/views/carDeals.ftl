@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Blog posts</title>
+    <title>Car dealer</title>
 
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.css">

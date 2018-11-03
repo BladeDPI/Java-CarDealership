@@ -19,7 +19,7 @@
         <!-- configs of JPA, like driver class, server URL and credentials -->
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:blog;DB_CLOSE_DELAY=-1" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:car;DB_CLOSE_DELAY=-1" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create" />

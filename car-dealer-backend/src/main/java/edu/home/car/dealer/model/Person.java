@@ -30,6 +30,8 @@ public class Person extends BaseEntity {
     private String phoneNumber;
     @Column
     private String city;
+    @Transient
+    private String password;
 
     @JsonBackReference
     @OneToMany(mappedBy="person",cascade=CascadeType.ALL, fetch = FetchType.EAGER)
@@ -38,14 +40,15 @@ public class Person extends BaseEntity {
     public Person(){
     }
 
-    public Person(String profileName, String firstName, String secondName, String idCardNumber, String email, String phoneNumber, String city) {
+    public Person(String profileName, String firstName, String secondName, String idCardNumber, String email, String phoneNumber, String city, String password) {
         this.profileName = profileName;
         this.firstName = firstName;
         this.secondName = secondName;
         this.idCardNumber = idCardNumber;
-        this.idCardNumber = email;
-        this.idCardNumber = phoneNumber;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.city = city;
+        this.password = password;
     }
 
     public String getProfileName() {
@@ -104,6 +107,14 @@ public class Person extends BaseEntity {
         this.city = city;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public List<Car> getCars() {
         return cars;
     }
@@ -123,6 +134,7 @@ public class Person extends BaseEntity {
                 "email=" + email +
                 "phoneNumber=" + phoneNumber +
                 "city=" + city +
+                "password=" + password +
                 "cars=" + cars +
                 '}';
     }
@@ -135,6 +147,7 @@ public class Person extends BaseEntity {
         private String email;
         private String phoneNumber;
         private String city;
+        private String password;
 
         public PersonBuilder profileName(String profileName) {
             this.profileName = profileName;
@@ -151,8 +164,8 @@ public class Person extends BaseEntity {
             return this;
         }
 
-        public PersonBuilder idCardNumber(String cnp) {
-            this.idCardNumber = cnp;
+        public PersonBuilder idCardNumber(String idCardNumber) {
+            this.idCardNumber = idCardNumber;
             return this;
         }
 
@@ -171,13 +184,18 @@ public class Person extends BaseEntity {
             return this;
         }
 
+        public PersonBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
         public Person createPerson() {
 
             if (isNotValid()) {
                 throw new IllegalStateException("Every filed must be filled.");
             }
 
-            return new Person(firstName, secondName, idCardNumber, email, phoneNumber, city, profileName);
+            return new Person(profileName, firstName, secondName, idCardNumber, email, phoneNumber, city, password);
         }
 
         private boolean isNotValid() {
@@ -187,7 +205,8 @@ public class Person extends BaseEntity {
                     Objects.isNull(email) ||
                     Objects.isNull(phoneNumber) ||
                     Objects.isNull(city) ||
-                    Objects.isNull(profileName);
+                    Objects.isNull(profileName) ||
+                    Objects.isNull(password);
         }
     }
 }

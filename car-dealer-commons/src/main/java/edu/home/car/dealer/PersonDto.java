@@ -13,6 +13,7 @@ public class PersonDto implements Serializable {
     private String email;
     private String phoneNumber;
     private String city;
+    private String password;
     private List<CarDto> cars;
 
     public PersonDto() {
@@ -80,6 +81,14 @@ public class PersonDto implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<CarDto> getCars() {

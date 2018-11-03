@@ -5,7 +5,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import edu.home.car.dealer.LoginDto;
+import edu.home.car.dealer.PersonDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -18,7 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -47,7 +46,7 @@ public class SignUpServlet extends HttpServlet {
         } catch (IOException e) {
             LOG.error("Failed to read template");
         }
-        LOG.info("Car dealer edu.wk.blog.servlet initialized");
+        LOG.info("Car dealer edu.wk.car.dealer.servlet initialized");
     }
 
 
@@ -92,12 +91,30 @@ public class SignUpServlet extends HttpServlet {
         final String psw = req.getParameter("psw");
         final String pswRepeat = req.getParameter("psw-repeat");
 
-        if(!psw.equals(pswRepeat)){
+        if (!psw.equals(pswRepeat)) {
             showLog(resp, "Passwords did not match", profileName, firstName, secondName, idCardNumber, email, phoneNumber, city);
-        }
-        else {
-            //TODO nickName
-            showLog(resp, "There was an error", profileName, firstName, secondName, idCardNumber, email, phoneNumber, city);
+        } else {
+            final ClientConfig config = new DefaultClientConfig();
+            final Client client = Client.create(config);
+            final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/signUp").build());
+
+            final PersonDto personDto = new PersonDto();
+            personDto.setProfileName(profileName);
+            personDto.setFirstName(firstName);
+            personDto.setSecondName(secondName);
+            personDto.setIdCardNumber(idCardNumber);
+            personDto.setEmail(email);
+            personDto.setPhoneNumber(phoneNumber);
+            personDto.setCity(city);
+            personDto.setPassword(psw);
+
+            final NewCookie cookie = SessionManager.getCookie(req);
+            final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, personDto);
+
+            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+                SessionManager.putCookie(req, response);
+            }
+            showLog(resp, response.getEntity(String.class), profileName, firstName, secondName, idCardNumber, email, phoneNumber, city);
         }
     }
 }
