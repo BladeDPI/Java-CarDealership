@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
         } catch (IOException e) {
             LOG.error("Failed to read template");
         }
-        LOG.info("Blog post edu.wk.blog.servlet initialized");
+        LOG.info("Car dealer edu.wk.blog.servlet initialized");
     }
 
     @Override

@@ -23,7 +23,11 @@ public class Person extends BaseEntity {
     @Column
     private String secondName;
     @Column
-    private String cnp;
+    private String idCardNumber;
+    @Column
+    private String email;
+    @Column
+    private String phoneNumber;
     @Column
     private String city;
 
@@ -34,11 +38,13 @@ public class Person extends BaseEntity {
     public Person(){
     }
 
-    public Person(String profileName, String firstName, String secondName, String cnp, String city) {
+    public Person(String profileName, String firstName, String secondName, String idCardNumber, String email, String phoneNumber, String city) {
         this.profileName = profileName;
         this.firstName = firstName;
         this.secondName = secondName;
-        this.cnp = cnp;
+        this.idCardNumber = idCardNumber;
+        this.idCardNumber = email;
+        this.idCardNumber = phoneNumber;
         this.city = city;
     }
 
@@ -66,12 +72,28 @@ public class Person extends BaseEntity {
         this.secondName = secondName;
     }
 
-    public String getCnp() {
-        return cnp;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setCnp(String cnp) {
-        this.cnp = cnp;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getCity() {
@@ -97,7 +119,9 @@ public class Person extends BaseEntity {
                 "profileName=" + profileName +
                 "firstName=" + firstName +
                 "secondName=" + secondName +
-                "cnp=" + cnp +
+                "idCardNumber=" + idCardNumber +
+                "email=" + email +
+                "phoneNumber=" + phoneNumber +
                 "city=" + city +
                 "cars=" + cars +
                 '}';
@@ -107,7 +131,9 @@ public class Person extends BaseEntity {
         private String profileName;
         private String firstName;
         private String secondName;
-        private String cnp;
+        private String idCardNumber;
+        private String email;
+        private String phoneNumber;
         private String city;
 
         public PersonBuilder profileName(String profileName) {
@@ -125,8 +151,18 @@ public class Person extends BaseEntity {
             return this;
         }
 
-        public PersonBuilder cnp(String cnp) {
-            this.cnp = cnp;
+        public PersonBuilder idCardNumber(String cnp) {
+            this.idCardNumber = cnp;
+            return this;
+        }
+
+        public PersonBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public PersonBuilder phoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
             return this;
         }
 
@@ -141,13 +177,15 @@ public class Person extends BaseEntity {
                 throw new IllegalStateException("Every filed must be filled.");
             }
 
-            return new Person(firstName, secondName, cnp, city, profileName);
+            return new Person(firstName, secondName, idCardNumber, email, phoneNumber, city, profileName);
         }
 
         private boolean isNotValid() {
             return Objects.isNull(firstName) ||
                     Objects.isNull(secondName) ||
-                    Objects.isNull(cnp) ||
+                    Objects.isNull(idCardNumber) ||
+                    Objects.isNull(email) ||
+                    Objects.isNull(phoneNumber) ||
                     Objects.isNull(city) ||
                     Objects.isNull(profileName);
         }

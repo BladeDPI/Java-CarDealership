@@ -32,7 +32,7 @@ public class DataInitialization {
     @PostConstruct
     private void init() {
 
-        final Person isti = new Person("DokaIstvan", "Doka", "Istvan", "5678", "Kolozsvar");
+        final Person isti = new Person("DokaIstvan", "Doka", "Istvan", "5678", "istvan_doka@yahoo.com", "0741085087", "Kolozsvar");
         final Options merciOption = createOptions(true, false, true, true, true, false, true, true, false, true, true);
         final Car merci = createCarDeals(5_400, "Mercedes Benz", "Ml-Class", "320 CDI", 240_000, 2006, "Diesel", "Suv", "Silver", "Arad", 165, "Automatic", isti, merciOption);
         isti.getCars().add(merci);
@@ -42,7 +42,7 @@ public class DataInitialization {
         optionsDao.create(merciOption);
         personDao.create(isti);
 
-        final Person parker = new Person("PeterParker", "Peter", "Parker", "7821", "New York");
+        final Person parker = new Person("PeterParker", "Peter", "Parker", "siderman@gmail.com", "532", "7821", "New York");
         final Options audiOption= createOptions(false, true, false, true, false, false, true, true, true, true, true);
         final Car audi = createCarDeals(19_300, "Audi", "A6", "2.0 TDI", 86_500, 2013, "Diesel", "Sedan", "Gold", "Cluj Napoca", 131, "Automatic", parker, audiOption);
         parker.getCars().add(audi);
@@ -53,7 +53,7 @@ public class DataInitialization {
         personDao.create(parker);
 
 
-        final Person wayne = new Person("BruceWayne", "Bruce", "Wayne", "3652", "Gotham");
+        final Person wayne = new Person("BruceWayne", "Bruce", "Wayne", "batman@gmail.com", "652" , "3652", "Gotham");
         final Options batMobilOption = createOptions(true, true, true, true, true, true, true, true, true, true, true);
         final Car batMobil = createCarDeals(1_000_000, "Wayne Industry", "BatMobil", "Tank", 100_500, 2018, "Diesel", "Tank", "Black", "Gotham", 1_000, "Automatic", wayne, batMobilOption);
         wayne.getCars().add(batMobil);

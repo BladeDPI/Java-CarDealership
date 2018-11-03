@@ -9,7 +9,9 @@ public class PersonDto implements Serializable {
     private String profileName;
     private String firstName;
     private String secondName;
-    private String cnp;
+    private String idCardNumber;
+    private String email;
+    private String phoneNumber;
     private String city;
     private List<CarDto> cars;
 
@@ -48,12 +50,28 @@ public class PersonDto implements Serializable {
         this.secondName = secondName;
     }
 
-    public String getCnp() {
-        return cnp;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setCnp(String cnp) {
-        this.cnp = cnp;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getCity() {
