@@ -56,7 +56,7 @@ public class CarDealerServlet extends HttpServlet {
 
         final Collection<CarDto> carDeals = getAllCars();
 
-        String nickName = getNickName(req);
+        String nickName = SessionManager.getNickName(req);
         if (nickName == null) {
             nickName = "LOGIN - you can only view";
         }
@@ -64,9 +64,7 @@ public class CarDealerServlet extends HttpServlet {
         showCars(resp, carDeals, nickName);
     }
 
-    private String getNickName(HttpServletRequest req) {
-        return (String) req.getSession().getAttribute("nickName");
-    }
+
 
     private Collection<CarDto> getAllCars() {
         final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
@@ -121,7 +119,7 @@ public class CarDealerServlet extends HttpServlet {
         final NewCookie cookie = SessionManager.getCookie(req);
 
         final String id = req.getParameter("button");
-        final String nickName = getNickName(req);
+        final String nickName = SessionManager.getNickName(req);
 
         if (nickName == null || cookie == null) {
             final Collection<CarDto> carDeals = getAllCars();
@@ -156,7 +154,7 @@ public class CarDealerServlet extends HttpServlet {
 
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
             final CarDto carDeals = response.getEntity(CarDto.class);
-            showCars(resp, Collections.singleton(carDeals), getNickName(req));
+            showCars(resp, Collections.singleton(carDeals), SessionManager.getNickName(req));
         } else {
             final Collection<CarDto> carDeals = getAllCars();
             showCars(resp, carDeals, response.getEntity(String.class));

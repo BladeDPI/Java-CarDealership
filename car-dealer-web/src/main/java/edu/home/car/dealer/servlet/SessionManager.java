@@ -30,4 +30,8 @@ class SessionManager {
             cookieMap.put(sessionId, newCookies.get(0));
         }
     }
+
+    static String getNickName(HttpServletRequest req) {
+        return (String) req.getSession().getAttribute("nickName");
+    }
 }

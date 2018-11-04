@@ -38,6 +38,7 @@ public class SignUpServlet extends HttpServlet {
     private Configuration configuration;
 
     @Override
+    //TODO kozos os
     public void init() throws ServletException {
         super.init();
 
@@ -46,7 +47,7 @@ public class SignUpServlet extends HttpServlet {
         } catch (IOException e) {
             LOG.error("Failed to read template");
         }
-        LOG.info("Car dealer edu.wk.car.dealer.servlet initialized");
+        LOG.info("Sign Up edu.wk.car.dealer.servlet initialized");
     }
 
 

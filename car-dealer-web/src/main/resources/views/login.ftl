@@ -59,7 +59,7 @@
 <body>
 
 <a href="http://localhost:8080/car-dealer-web/signUp"><h2>Sing Up</h2></a>
-<a href="http://localhost:8080/car-dealer-web/carDeals"><h2>${login}</h2></a>
+<a href="http://localhost:8080/car-dealer-web/carDeals"><h2>Car Deals - ${login}</h2></a>
 
 <form method="POST">
     <div class="imgcontainer">
