@@ -7,9 +7,10 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import edu.home.car.dealer.CarDto;
 import edu.home.car.dealer.freemarker.CarDtoFreemarker;
+import edu.home.car.dealer.utils.ConstVariables;
+import edu.home.car.dealer.utils.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.util.*;
+
+import static edu.home.car.dealer.utils.Freemarker.loadFreeMarkerTemplate;
 
 
 @WebServlet(urlPatterns = "/carDeals")
@@ -64,10 +67,8 @@ public class CarDealerServlet extends HttpServlet {
         showCars(resp, carDeals, nickName);
     }
 
-
-
     private Collection<CarDto> getAllCars() {
-        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+        final WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.CAR_DEALS_API_URL).build());
 
         final ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         return response.getEntity(new GenericType<List<CarDto>>() {
@@ -86,13 +87,7 @@ public class CarDealerServlet extends HttpServlet {
 
         model.put("nickName", nickName);
 
-        try {
-            freemarkerTemplate.process(model, resp.getWriter());
-        } catch (TemplateException e) {
-            LOG.error("Could not render template");
-            resp.getWriter().println("Could not render template");
-            resp.setStatus(500);
-        }
+        loadFreeMarkerTemplate(LOG, freemarkerTemplate, resp, model);
     }
 
     @Override
@@ -125,7 +120,7 @@ public class CarDealerServlet extends HttpServlet {
             final Collection<CarDto> carDeals = getAllCars();
             showCars(resp, carDeals, "You do not have privilege please login");
         } else {
-            final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+            final WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.CAR_DEALS_API_URL).build());
             final ClientResponse response = service.path(id).path(nickName).cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
 
             SessionManager.putCookie(req, response);
@@ -143,7 +138,7 @@ public class CarDealerServlet extends HttpServlet {
     }
 
     private void findCar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals").build());
+        final WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.CAR_DEALS_API_URL).build());
 
         final NewCookie cookie = SessionManager.getCookie(req);
 

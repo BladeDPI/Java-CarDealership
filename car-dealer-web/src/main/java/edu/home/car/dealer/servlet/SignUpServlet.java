@@ -6,9 +6,10 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import edu.home.car.dealer.PersonDto;
+import edu.home.car.dealer.utils.ConstVariables;
+import edu.home.car.dealer.utils.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static edu.home.car.dealer.utils.Freemarker.loadFreeMarkerTemplate;
 
 
 @WebServlet(urlPatterns = "/signUp")
@@ -38,7 +40,6 @@ public class SignUpServlet extends HttpServlet {
     private Configuration configuration;
 
     @Override
-    //TODO kozos os
     public void init() throws ServletException {
         super.init();
 
@@ -59,7 +60,7 @@ public class SignUpServlet extends HttpServlet {
 
     private void showLog(HttpServletResponse resp, String login, String profileName, String firstName,
                          String secondName, String idCardNumber, String email, String phoneNumber, String city) throws IOException {
-        final Map<String, String> model = new HashMap<>();
+        final Map<String, Object> model = new HashMap<>();
         model.put("login", login);
         model.put("profileName", profileName);
         model.put("firstName", firstName);
@@ -69,13 +70,7 @@ public class SignUpServlet extends HttpServlet {
         model.put("phoneNumber", phoneNumber);
         model.put("city", city);
 
-        try {
-            freemarkerTemplate.process(model, resp.getWriter());
-        } catch (TemplateException e) {
-            LOG.error("Could not render template");
-            resp.getWriter().println("Could not render template");
-            resp.setStatus(500);
-        }
+        loadFreeMarkerTemplate(LOG, freemarkerTemplate, resp, model);
     }
 
     @Override
@@ -97,7 +92,7 @@ public class SignUpServlet extends HttpServlet {
         } else {
             final ClientConfig config = new DefaultClientConfig();
             final Client client = Client.create(config);
-            final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/signUp").build());
+            final WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.SING_UP_API_URL).build());
 
             final PersonDto personDto = new PersonDto();
             personDto.setProfileName(profileName);
@@ -112,9 +107,8 @@ public class SignUpServlet extends HttpServlet {
             final NewCookie cookie = SessionManager.getCookie(req);
             final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, personDto);
 
-            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-                SessionManager.putCookie(req, response);
-            }
+            SessionManager.putCookie(req, response);
+
             showLog(resp, response.getEntity(String.class), profileName, firstName, secondName, idCardNumber, email, phoneNumber, city);
         }
     }

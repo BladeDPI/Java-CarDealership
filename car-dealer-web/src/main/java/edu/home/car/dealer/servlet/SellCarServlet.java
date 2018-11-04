@@ -7,9 +7,10 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import edu.home.car.dealer.CarDto;
 import edu.home.car.dealer.OptionsDto;
+import edu.home.car.dealer.utils.ConstVariables;
+import edu.home.car.dealer.utils.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,8 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static edu.home.car.dealer.utils.Freemarker.loadFreeMarkerTemplate;
 
 
 @WebServlet(urlPatterns = "/createCarDeal")
@@ -67,7 +70,7 @@ public class SellCarServlet extends HttpServlet {
     private void showLog(HttpServletResponse resp, String nickName, String login, String price, String make,
                          String model, String trim, String km, String year, String fuelType, String bodyType,
                          String color, String city, String power, String transmission) throws IOException {
-        final Map<String, String> modelFreeMark = new HashMap<>();
+        final Map<String, Object> modelFreeMark = new HashMap<>();
 
         modelFreeMark.put("nickName", nickName);
         modelFreeMark.put("login", login);
@@ -85,13 +88,7 @@ public class SellCarServlet extends HttpServlet {
         modelFreeMark.put("power", power);
         modelFreeMark.put("transmission", transmission);
 
-        try {
-            freemarkerTemplate.process(modelFreeMark, resp.getWriter());
-        } catch (TemplateException e) {
-            LOG.error("Could not render template");
-            resp.getWriter().println("Could not render template");
-            resp.setStatus(500);
-        }
+        loadFreeMarkerTemplate(LOG, freemarkerTemplate, resp, modelFreeMark);
     }
 
     @Override
@@ -120,10 +117,12 @@ public class SellCarServlet extends HttpServlet {
 
             final ClientConfig config = new DefaultClientConfig();
             final Client client = Client.create(config);
-            final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/carDeals/createCarDeal").build());
+            final WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.CREATE_CAR_API_URL).build());
 
             final NewCookie cookie = SessionManager.getCookie(req);
             final ClientResponse response = service.path(nickName).cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, carDto);
+
+            SessionManager.putCookie(req, response);
 
             if (response.getStatus() == Response.Status.OK.getStatusCode()) {
                 SessionManager.putCookie(req, response);

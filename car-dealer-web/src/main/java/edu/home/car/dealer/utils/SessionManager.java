@@ -1,4 +1,4 @@
-package edu.home.car.dealer.servlet;
+package edu.home.car.dealer.utils;
 
 import com.sun.jersey.api.client.ClientResponse;
 
@@ -12,17 +12,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
 @Startup
-class SessionManager {
+public class SessionManager {
 
     private static final ConcurrentHashMap<String, NewCookie> cookieMap = new ConcurrentHashMap<>();
 
-    static NewCookie getCookie(HttpServletRequest req) {
+    public static NewCookie getCookie(HttpServletRequest req) {
         final HttpSession session = req.getSession(true);
         final String sessionId = session.getId();
         return cookieMap.get(sessionId);
     }
 
-    static void putCookie(HttpServletRequest req, ClientResponse response) {
+    public static void putCookie(HttpServletRequest req, ClientResponse response) {
         final List<NewCookie> newCookies = response.getCookies();
         if (newCookies != null && newCookies.size() > 0) {
             final HttpSession session = req.getSession(true);
@@ -31,7 +31,7 @@ class SessionManager {
         }
     }
 
-    static String getNickName(HttpServletRequest req) {
+    public static String getNickName(HttpServletRequest req) {
         return (String) req.getSession().getAttribute("nickName");
     }
 }

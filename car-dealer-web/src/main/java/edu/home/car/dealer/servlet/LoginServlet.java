@@ -1,9 +1,10 @@
 package edu.home.car.dealer.servlet;
 
 import edu.home.car.dealer.LoginDto;
+import edu.home.car.dealer.utils.ConstVariables;
+import edu.home.car.dealer.utils.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+
+import static edu.home.car.dealer.utils.Freemarker.loadFreeMarkerTemplate;
 
 
 @WebServlet(urlPatterns = "/login")
@@ -59,18 +62,12 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void showLog(HttpServletResponse resp, String login, String userName, String password) throws IOException {
-        final Map<String, String> model = new HashMap<>();
+        final Map<String, Object> model = new HashMap<>();
         model.put("login", login);
         model.put("userName", userName);
         model.put("password", password);
 
-        try {
-            freemarkerTemplate.process(model, resp.getWriter());
-        } catch (TemplateException e) {
-            LOG.error("Could not render template");
-            resp.getWriter().println("Could not render template");
-            resp.setStatus(500);
-        }
+        loadFreeMarkerTemplate(LOG, freemarkerTemplate, resp, model);
     }
 
     @Override
@@ -96,7 +93,7 @@ public class LoginServlet extends HttpServlet {
     private void login(HttpServletRequest req, HttpServletResponse resp, String userName, String password) throws IOException {
         final ClientConfig config = new DefaultClientConfig();
         final Client client = Client.create(config);
-        final WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/login").build());
+        final WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.LOGIN_API_URL).build());
 
         final LoginDto loginDto = new LoginDto();
         loginDto.setUsername(userName);
@@ -105,10 +102,11 @@ public class LoginServlet extends HttpServlet {
         final NewCookie cookie = SessionManager.getCookie(req);
         final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, loginDto);
 
+        SessionManager.putCookie(req, response);
+
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
             final HttpSession session = req.getSession(true);
             session.setAttribute("nickName", userName);
-            SessionManager.putCookie(req, response);
         }
 
         showLog(resp, response.getEntity(String.class), loginDto.getUsername(), loginDto.getPassword());
@@ -117,15 +115,16 @@ public class LoginServlet extends HttpServlet {
     private void logout(HttpServletRequest req, HttpServletResponse resp, String userName, String password) throws IOException {
         final ClientConfig config = new DefaultClientConfig();
         final Client client = Client.create(config);
-        WebResource service = client.resource(UriBuilder.fromUri("http://localhost:8080/car-dealer-api/logout").build());
+        WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.LOGOUT_API_URL).build());
 
         final NewCookie cookie = SessionManager.getCookie(req);
         final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class);
 
+        SessionManager.putCookie(req, response);
+
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
             final HttpSession session = req.getSession(true);
             session.setAttribute("nickName", null);
-            SessionManager.putCookie(req, response);
         }
 
         showLog(resp, response.getEntity(String.class), userName, password);

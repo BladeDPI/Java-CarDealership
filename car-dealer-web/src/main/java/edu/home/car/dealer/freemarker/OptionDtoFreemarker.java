@@ -20,7 +20,7 @@ public class OptionDtoFreemarker {
     private String leather;
     private String powerSteering;
 
-    public OptionDtoFreemarker(OptionsDto optionsDTO){
+    OptionDtoFreemarker(OptionsDto optionsDTO){
         this.abs = optionsDTO.isAbs() ? "Abs" : "";
         this.airbag = optionsDTO.isAirbag() ? "Airbag" : "";
         this.alarm = optionsDTO.isAlarm() ? "Xenon Headlights" : "";
