@@ -94,18 +94,12 @@ public class SignUpServlet extends HttpServlet {
             final Client client = Client.create(config);
             final WebResource service = client.resource(UriBuilder.fromUri(ConstVariables.SING_UP_API_URL).build());
 
-            final PersonDto personDto = new PersonDto();
-            personDto.setProfileName(profileName);
-            personDto.setFirstName(firstName);
-            personDto.setSecondName(secondName);
-            personDto.setIdCardNumber(idCardNumber);
-            personDto.setEmail(email);
-            personDto.setPhoneNumber(phoneNumber);
-            personDto.setCity(city);
-            personDto.setPassword(psw);
+            final PersonDto.PersonDtoBuilder builder = new PersonDto.PersonDtoBuilder();
+            builder.profileName(profileName).firstName(firstName).secondName(secondName)
+                    .idCardNumber(idCardNumber).email(email).phoneNumber(phoneNumber).city(city).password(psw);
 
             final NewCookie cookie = SessionManager.getCookie(req);
-            final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, personDto);
+            final ClientResponse response = service.cookie(cookie).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, builder.createPersonDto());
 
             SessionManager.putCookie(req, response);
 

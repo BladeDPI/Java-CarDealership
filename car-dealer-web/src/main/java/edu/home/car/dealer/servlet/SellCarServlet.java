@@ -149,42 +149,22 @@ public class SellCarServlet extends HttpServlet {
         final boolean leather = req.getParameter("leather").equals("leather");
         final boolean powerSteering = req.getParameter("powerSteering") != null;
 
-        final OptionsDto options = new OptionsDto();
-        options.setAbs(abs);
-        options.setAirbag(airbag);
-        options.setAlarm(alarm);
-        options.setAlloyWheels(alloyWheels);
-        options.setCentralLocking(centralLocking);
-        options.setCruiseControl(cruiseControl);
-        options.setCentralLocking(centralLocking);
-        options.setElectricMirrors(electricMirrors);
-        options.setElectricWindows(electricWindows);
-        options.setTripComputer(tripComputer);
-        options.setLeather(leather);
-        options.setPowerSteering(powerSteering);
+        final OptionsDto.OptionDtoBuilder builder = new OptionsDto.OptionDtoBuilder();
+        builder.abs(abs).airbag(airbag).alarm(alarm).alloyWheels(alloyWheels).centralLocking(centralLocking)
+                .cruiseControl(cruiseControl).electricMirrors(electricMirrors).electricWindows(electricWindows)
+                .tripComputer(tripComputer).leather(leather).powerSteering(powerSteering);
 
-        return options;
+        return builder.createOptionDto();
     }
 
     private CarDto createCarDTO(int price, String make, String model, String trim, int km, int year, String fuelType,
                                 String bodyType, String color, String city, int power, String transmission, OptionsDto optionsDto) {
 
-        final CarDto car = new CarDto();
-        car.setPrice(price);
-        car.setMake(make);
-        car.setModel(model);
-        car.setTrim(trim);
-        car.setKm(km);
-        car.setYear(year);
-        car.setFuelType(fuelType);
-        car.setBodyType(bodyType);
-        car.setColor(color);
-        car.setCity(city);
-        car.setPower(power);
-        car.setTransmission(transmission);
-        car.setOptions(optionsDto);
-
-        return car;
+        final CarDto.CarDtoBuilder builder = new CarDto.CarDtoBuilder();
+        builder.price(price).make(make).model(model).trim(trim).km(km).year(year)
+                .fuelType(fuelType).bodyType(bodyType).color(color).city(city).power(power)
+                .transmission(transmission).optionsDto(optionsDto);
+        return builder.createCarDto();
     }
 }
 
