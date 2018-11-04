@@ -111,7 +111,8 @@
 </style>
 <body>
 
-<a href="http://localhost:8080/car-dealer-web/login"><h2>${login}</h2></a>
+<a href="http://localhost:8080/car-dealer-web/login"><h2>${nickName} ${login}</h2></a>
+<a href="http://localhost:8080/car-dealer-web/carDeals"><h2>Car Deals</h2></a>
 
 <form method="POST">
     <div class="container">

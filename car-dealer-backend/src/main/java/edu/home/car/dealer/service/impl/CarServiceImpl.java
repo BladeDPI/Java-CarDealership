@@ -33,8 +33,7 @@ public class CarServiceImpl implements CarService {
     public Collection<Car> findAllAvailable() throws ServiceException {
         try {
             return carDealerDao.findAllAvailable();
-        }
-        catch (RepositoryException e) {
+        } catch (RepositoryException e) {
             LOG.error("findAllCarDeals failed", e);
             throw new ServiceException("findAllCarDeals failed", e);
         }
@@ -45,8 +44,7 @@ public class CarServiceImpl implements CarService {
     public Car findCarDealById(Long id) throws ServiceException {
         try {
             return carDealerDao.findById(id);
-        }
-        catch (RepositoryException e) {
+        } catch (RepositoryException e) {
             LOG.error("findCarDealById failed", e);
             throw new ServiceException("findCarDealById failed", e);
         }
@@ -54,11 +52,12 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @RolesAllowed("carDealer")
-    public void createCarDeal(Car carDeal) throws ServiceException {
+    public void createCarDeal(Car carDeal, String profileName) throws ServiceException {
         try {
+            final Person person = personService.findPersonByProfileName(profileName);
+            carDeal.setPerson(person);
             carDealerDao.create(carDeal);
-        }
-        catch (RepositoryException e) {
+        } catch (RepositoryException e) {
             LOG.error("createCar failed", e);
             throw new ServiceException("createCar failed", e);
         }
@@ -67,10 +66,15 @@ public class CarServiceImpl implements CarService {
     @Override
     @RolesAllowed("carDealer")
     public Car sellCar(Car car, String profileName) {
-        final Person person = personService.findPersonByProfileName(profileName);
-        car.setPerson(person);
-        car.setSold(true);
-        carDealerDao.save(car);
-        return car;
+        try {
+            final Person person = personService.findPersonByProfileName(profileName);
+            car.setPerson(person);
+            car.setSold(true);
+            carDealerDao.save(car);
+            return car;
+        } catch (RepositoryException e) {
+            LOG.error("sellCar failed", e);
+            throw new ServiceException("sellCar failed", e);
+        }
     }
 }

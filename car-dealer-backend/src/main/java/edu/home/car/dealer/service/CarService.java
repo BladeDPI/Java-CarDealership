@@ -10,7 +10,7 @@ public interface CarService {
 
     Car findCarDealById(Long id);
 
-    void createCarDeal(Car carDeal);
+    void createCarDeal(Car carDeal, String profileName);
 
     Car sellCar(Car car, String profileName);
 }

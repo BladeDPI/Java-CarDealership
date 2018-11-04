@@ -105,7 +105,7 @@
     </nav>
 
     <a href="http://localhost:8080/car-dealer-web/login"><h2>${nickName}</h2></a>
-    <a href="http://localhost:8080/car-dealer-web/sellCar"><h2>Sell your car</h2></a>
+    <a href="http://localhost:8080/car-dealer-web/createCarDeal"><h2>Sell your car</h2></a>
 
         <#list carDeals as carDeal>
         <div class="car-deals">

@@ -354,7 +354,6 @@ public class Car extends BaseEntity {
                     Objects.isNull(power) ||
                     Objects.isNull(transmission) ||
                     Objects.isNull(uploadDate) ||
-                    Objects.isNull(person) ||
                     Objects.isNull(options);
         }
     }
