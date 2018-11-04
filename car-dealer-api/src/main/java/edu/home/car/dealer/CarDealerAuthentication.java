@@ -33,11 +33,7 @@ public class CarDealerAuthentication {
     public Response singUp(PersonDto personDto) {
         try {
             if (personService.findPersonByProfileName(personDto.getProfileName()) == null) {
-                Person.PersonBuilder personBuilder = new Person.PersonBuilder();
-                personBuilder.profileName(personDto.getProfileName()).firstName(personDto.getFirstName()).
-                        secondName(personDto.getSecondName()).idCardNumber(personDto.getIdCardNumber()).email(personDto.getEmail())
-                        .city(personDto.getCity()).phoneNumber(personDto.getPhoneNumber()).password(personDto.getPassword());
-                personService.createPerson(personBuilder.createPerson());
+                personService.createPerson(getPerson(personDto));
                 return Response.ok("User successful created").build();
             } else {
                 return Response.status(Status.CONFLICT).entity("Profile name already used, please choose another.").build();
@@ -45,6 +41,14 @@ public class CarDealerAuthentication {
         } catch (final Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Failed to create user - " + e.getMessage()).build();
         }
+    }
+
+    private Person getPerson(PersonDto personDto) {
+        Person.PersonBuilder personBuilder = new Person.PersonBuilder();
+        personBuilder.profileName(personDto.getProfileName()).firstName(personDto.getFirstName()).
+                secondName(personDto.getSecondName()).idCardNumber(personDto.getIdCardNumber()).email(personDto.getEmail())
+                .city(personDto.getCity()).phoneNumber(personDto.getPhoneNumber()).password(personDto.getPassword());
+        return personBuilder.createPerson();
     }
 
     @POST

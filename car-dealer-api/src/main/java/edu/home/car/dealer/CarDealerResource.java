@@ -68,28 +68,31 @@ public class CarDealerResource {
     public Response createCarDeal(@PathParam("profileName") String profileName, CarDto carDto) {
 
         try {
-            final OptionsDto optionsDto = carDto.getOptions();
-            final Options.OptionBuilder optionBuilder = new Options.OptionBuilder();
-            optionBuilder.abs(optionsDto.isAbs()).airbag(optionsDto.isAirbag()).alarm(optionsDto.isAlarm())
-                    .alloyWheels(optionsDto.isAlloyWheels()).centralLocking(optionsDto.isCentralLocking()).cruiseControl(optionsDto.isCruiseControl())
-                    .electricMirrors(optionsDto.isElectricMirrors()).electricWindows(optionsDto.isElectricWindows()).leather(optionsDto.isLeather())
-                    .powerSteering(optionsDto.isPowerSteering()).tripComputer(optionsDto.isTripComputer());
-
-            final Options options = optionBuilder.createOption();
-
-            final Car.CarBuilder carBuilder = new Car.CarBuilder();
-            carBuilder.price(carDto.getPrice()).make(carDto.getMake()).model(carDto.getModel()).bodyType(carDto.getBodyType())
-                    .city(carDto.getCity()).color(carDto.getCity()).fuelType(carDto.getFuelType()).km(carDto.getKm()).year(carDto.getYear())
-                    .power(carDto.getPower()).trim(carDto.getTrim()).transmission(carDto.getTransmission()).uploadDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
-
-            carBuilder.options(options);
-
-            carDealerService.createCarDeal(carBuilder.createCar(), profileName);
+            carDealerService.createCarDeal(getCar(carDto), profileName);
             final ResponseBuilder builder = Response.ok("Car deal created");
             return builder.build();
         } catch (EJBAccessException e) {
             return Response.status(Response.Status.FORBIDDEN).entity("You do not have privilege please login").build();
         }
 
+    }
+
+    private Car getCar(CarDto carDto) {
+        final OptionsDto optionsDto = carDto.getOptions();
+        final Options.OptionBuilder optionBuilder = new Options.OptionBuilder();
+        optionBuilder.abs(optionsDto.isAbs()).airbag(optionsDto.isAirbag()).alarm(optionsDto.isAlarm())
+                .alloyWheels(optionsDto.isAlloyWheels()).centralLocking(optionsDto.isCentralLocking()).cruiseControl(optionsDto.isCruiseControl())
+                .electricMirrors(optionsDto.isElectricMirrors()).electricWindows(optionsDto.isElectricWindows()).leather(optionsDto.isLeather())
+                .powerSteering(optionsDto.isPowerSteering()).tripComputer(optionsDto.isTripComputer());
+
+        final Options options = optionBuilder.createOption();
+
+        final Car.CarBuilder carBuilder = new Car.CarBuilder();
+        carBuilder.price(carDto.getPrice()).make(carDto.getMake()).model(carDto.getModel()).bodyType(carDto.getBodyType())
+                .city(carDto.getCity()).color(carDto.getCity()).fuelType(carDto.getFuelType()).km(carDto.getKm()).year(carDto.getYear())
+                .power(carDto.getPower()).trim(carDto.getTrim()).transmission(carDto.getTransmission()).uploadDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
+
+        carBuilder.options(options);
+        return carBuilder.createCar();
     }
 }
