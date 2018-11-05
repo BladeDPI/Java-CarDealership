@@ -89,7 +89,7 @@ public class CarDealerResource {
 
         final Car.CarBuilder carBuilder = new Car.CarBuilder();
         carBuilder.price(carDto.getPrice()).make(carDto.getMake()).model(carDto.getModel()).bodyType(carDto.getBodyType())
-                .city(carDto.getCity()).color(carDto.getCity()).fuelType(carDto.getFuelType()).km(carDto.getKm()).year(carDto.getYear())
+                .city(carDto.getCity()).color(carDto.getColor()).fuelType(carDto.getFuelType()).km(carDto.getKm()).year(carDto.getYear())
                 .power(carDto.getPower()).trim(carDto.getTrim()).transmission(carDto.getTransmission()).uploadDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
 
         carBuilder.options(options);

@@ -133,10 +133,6 @@
                     <td>${carDeal.trim}</td>
                 </tr>
                 <tr>
-                    <td><b>Model</b></td>
-                    <td>${carDeal.model}</td>
-                </tr>
-                <tr>
                     <td><b>Km</b></td>
                     <td>${carDeal.km}</td>
                 </tr>
