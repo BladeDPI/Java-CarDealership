@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOG.info("Login GET received");
-        showLog(resp, "Please login", "DokaIstvan", "isti");
+        showLog(resp, "Please login", "DokaIstvan", "DokaIstvan");
     }
 
     private void showLog(HttpServletResponse resp, String login, String userName, String password) throws IOException {
